@@ -1,41 +1,39 @@
 export const MINSK_METRO = [
-  { id: 'uruche', order: 1, name: 'Уручча / 乌鲁奇耶', line: 'moskovskaya' },
-  { id: 'borisov', order: 2, name: 'Барысаўскі тракт / 鲍里索夫大道', line: 'moskovskaya' },
-  { id: 'vostok', order: 3, name: 'Усход / 东方站', line: 'moskovskaya' },
-  { id: 'moskovskaya', order: 4, name: 'Маскоўская / 莫斯科站', line: 'moskovskaya' },
-  { id: 'park', order: 5, name: 'Парк Чалюскінцаў / 切柳斯金公园', line: 'moskovskaya' },
-  { id: 'academy', order: 6, name: 'Акадэмія навук / 科学院', line: 'moskovskaya' },
-  { id: 'kolasa', order: 7, name: 'Плошча Якуба Коласа / 雅库布·科拉斯广场', line: 'moskovskaya' },
-  { id: 'pobedy', order: 8, name: 'Плошча Перамогі / 胜利广场', line: 'moskovskaya' },
-  { id: 'oktyabrskaya', order: 9, name: 'Кастрычніцкая / 十月站', line: 'moskovskaya' },
-  { id: 'lenina', order: 10, name: 'Плошча Леніна / 列宁广场', line: 'moskovskaya' },
-  { id: 'kultury', order: 11, name: 'Інстытут Культуры / 文化学院', line: 'moskovskaya' },
-  { id: 'grushevka', order: 12, name: 'Грушаўка / 格鲁舍夫卡', line: 'moskovskaya' },
-  { id: 'mihalovo', order: 13, name: 'Міхалова / 米哈洛沃', line: 'moskovskaya' },
-  { id: 'petrovshina', order: 14, name: 'Пятроўшчына / 彼得罗夫希纳', line: 'moskovskaya' },
-  { id: 'malinovka', order: 15, name: 'Малінаўка / 马利诺夫卡', line: 'moskovskaya' },
+  { id: 'malinovka', code: 110, name: 'МАЛИНОВКА / 马利诺夫卡', line: 'moskovskaya' },
+  { id: 'petrovshina', code: 111, name: 'ПЕТРОВЩИНА / 彼得罗夫希纳', line: 'moskovskaya' },
+  { id: 'mihalovo', code: 112, name: 'МИХАЛОВО / 米哈洛沃', line: 'moskovskaya' },
+  { id: 'grushevka', code: 113, name: 'ГРУШЕВКА / 格鲁舍夫卡', line: 'moskovskaya' },
+  { id: 'kultury', code: 114, name: 'ИНСТИТУТ КУЛЬТУРЫ / 文化学院', line: 'moskovskaya' },
+  { id: 'lenina', code: 115, name: 'ПЛОЩАДЬ ЛЕНИНА / 列宁广场', line: 'moskovskaya' },
+  { id: 'oktyabrskaya', code: 116, name: 'ОКТЯБРЬСКАЯ / 十月站', line: 'moskovskaya' },
+  { id: 'pobedy', code: 117, name: 'ПЛОЩАДЬ ПОБЕДЫ / 胜利广场', line: 'moskovskaya' },
+  { id: 'kolasa', code: 118, name: 'ПЛОЩАДЬ ЯКУБА КОЛАСА / 雅库布·科拉斯广场', line: 'moskovskaya' },
+  { id: 'academy', code: 119, name: 'АКАДЕМИЯ НАУК / 科学院', line: 'moskovskaya' },
+  { id: 'park', code: 120, name: 'ПАРК ЧЕЛЮСКИНЦЕВ / 切柳斯金采夫公园', line: 'moskovskaya' },
+  { id: 'moskovskaya', code: 121, name: 'МОСКОВСКАЯ / 莫斯科站', line: 'moskovskaya' },
+  { id: 'vostok', code: 122, name: 'ВОСТОК / 东方站', line: 'moskovskaya' },
+  { id: 'borisov', code: 123, name: 'БОРИСОВСКИЙ ТРАКТ / 鲍里索夫大道', line: 'moskovskaya' },
+  { id: 'uruche', code: 124, name: 'УРУЧЬЕ / 乌鲁奇耶', line: 'moskovskaya' },
 
-  { id: 'kamennaya', order: 16, name: 'Каменная Горка / 石山', line: 'avtozavodskaya' },
-  { id: 'kuncovshina', order: 17, name: 'Кунцаўшчына / 昆采夫希纳', line: 'avtozavodskaya' },
-  { id: 'sportivnaya', order: 18, name: 'Спартыўная / 体育站', line: 'avtozavodskaya' },
-  { id: 'pushkinskaya', order: 19, name: 'Пушкінская / 普希金站', line: 'avtozavodskaya' },
-  { id: 'molodezhnaya', order: 20, name: 'Маладзёжная / 青年站', line: 'avtozavodskaya' },
-  { id: 'frunzenskaya', order: 21, name: 'Фрунзенская / 伏龙芝站', line: 'avtozavodskaya' },
-  { id: 'nemiga', order: 22, name: 'Няміга / 涅米加', line: 'avtozavodskaya' },
-  { id: 'kupalovskaya', order: 23, name: 'Купалаўская / 库帕洛夫站', line: 'avtozavodskaya' },
-  { id: 'pervomayskaya', order: 24, name: 'Першамайская / 五一站', line: 'avtozavodskaya' },
-  { id: 'proletarskaya', order: 25, name: 'Пралетарская / 无产阶级站', line: 'avtozavodskaya' },
-  { id: 'traktorny', order: 26, name: 'Трактарны Завод / 拖拉机厂', line: 'avtozavodskaya' },
-  { id: 'partizanskaya', order: 27, name: 'Партызанская / 游击站', line: 'avtozavodskaya' },
-  { id: 'avtozavodskaya', order: 28, name: 'Аўтазаводская / 汽车厂站', line: 'avtozavodskaya' },
-  { id: 'mogilevskaya', order: 29, name: 'Магілёўская / 莫吉廖夫站', line: 'avtozavodskaya' },
+  { id: 'mogilevskaya', code: 210, name: 'МОГИЛЕВСКАЯ / 莫吉廖夫站', line: 'avtozavodskaya' },
+  { id: 'avtozavodskaya', code: 211, name: 'АВТОЗАВОДСКАЯ / 汽车厂站', line: 'avtozavodskaya' },
+  { id: 'partizanskaya', code: 212, name: 'ПАРТИЗАНСКАЯ / 游击站', line: 'avtozavodskaya' },
+  { id: 'traktorny', code: 213, name: 'ТРАКТОРНЫЙ ЗАВОД / 拖拉机厂站', line: 'avtozavodskaya' },
+  { id: 'proletarskaya', code: 214, name: 'ПРОЛЕТАРСКАЯ / 无产阶级站', line: 'avtozavodskaya' },
+  { id: 'pervomayskaya', code: 215, name: 'ПЕРВОМАЙСКАЯ / 五一站', line: 'avtozavodskaya' },
+  { id: 'kupalovskaya', code: 216, name: 'КУПАЛОВСКАЯ / 库帕洛夫斯基站', line: 'avtozavodskaya' },
+  { id: 'nemiga', code: 217, name: 'НЕМИГА / 涅米加站', line: 'avtozavodskaya' },
+  { id: 'frunzenskaya', code: 218, name: 'ФРУНЗЕНСКАЯ / 伏龙芝站', line: 'avtozavodskaya' },
+  { id: 'molodezhnaya', code: 219, name: 'МОЛОДЁЖНАЯ / 青年站', line: 'avtozavodskaya' },
+  { id: 'pushkinskaya', code: 220, name: 'ПУШКИНСКАЯ / 普希金站', line: 'avtozavodskaya' },
+  { id: 'sportivnaya', code: 221, name: 'СПОРТИВНАЯ / 体育站', line: 'avtozavodskaya' },
+  { id: 'kuncovshina', code: 222, name: 'КУНЦЕВЩИНА / 昆采夫希纳', line: 'avtozavodskaya' },
+  { id: 'kamennaya', code: 223, name: 'КАМЕННАЯ ГОРКА / 石头城', line: 'avtozavodskaya' },
 
-  { id: 'yubileynaya', order: 30, name: 'Юбілейная плошча /  jubilee square', line: 'zelenaluzhskaya' },
-  { id: 'bogushevicha', order: 31, name: 'Плошча Францішка Багушэвіча / 博古舍维奇广场', line: 'zelenaluzhskaya' },
-  { id: 'vokzalnaya', order: 32, name: 'Вакзальная / 火车站', line: 'zelenaluzhskaya' },
-  { id: 'kovalskaya', order: 33, name: 'Ковальская Слабада / 铁匠镇', line: 'zelenaluzhskaya' },
-  { id: 'aerodromnaya', order: 34, name: 'Аэрадромная / 机场站', line: 'zelenaluzhskaya' },
-  { id: 'nemorshansky', order: 35, name: 'Немаршанскі Сад / 涅莫尔尚花园', line: 'zelenaluzhskaya' },
+  { id: 'kovalskaya', code: 310, name: 'КОВАЛЬСКАЯ СЛОБОДА / 科瓦利斯卡亚·斯洛博达', line: 'zelenaluzhskaya' },
+  { id: 'vokzalnaya', code: 311, name: 'ВОКЗАЛЬНАЯ / 火车站', line: 'zelenaluzhskaya' },
+  { id: 'bogushevicha', code: 312, name: 'ПЛОЩАДЬ ФРАНТИШКА БОГУШЕВИЧА / 弗朗齐什克·博古舍维奇广场', line: 'zelenaluzhskaya' },
+  { id: 'yubileynaya', code: 313, name: 'ЮБИЛЕЙНАЯ / jubilee站', line: 'zelenaluzhskaya' },
 ]
 
 export const METRO_LINES = {
@@ -45,7 +43,7 @@ export const METRO_LINES = {
 }
 
 export function displayMetro(station) {
-  return `${station.order}. ${station.name}`
+  return `${station.code} ${station.name}`
 }
 
 export function getMetroName(id) {
