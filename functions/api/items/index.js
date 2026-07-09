@@ -1,7 +1,6 @@
 export async function onRequest(context) {
-  const { request, data } = context
+  const { request, env } = context
   const url = new URL(request.url)
-  const { dataApi } = data
 
   const category = url.searchParams.get('category')
   const type = url.searchParams.get('type')
@@ -9,38 +8,59 @@ export async function onRequest(context) {
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '20'), 50)
 
   if (request.method === 'GET') {
-    const query = {}
-    if (category) query.category = category
-    if (type) query.type = type
-    if (search) query.title = { $regex: search, $options: 'i' }
+    let sql = 'SELECT * FROM items WHERE 1=1'
+    const params = []
 
-    const result = await dataApi('find', 'items', {
-      filter: query,
-      sort: { createdAt: -1 },
-      limit
-    })
+    if (category) { sql += ' AND category = ?'; params.push(category) }
+    if (type) { sql += ' AND type = ?'; params.push(type) }
+    if (search) { sql += ' AND title LIKE ?'; params.push(`%${search}%`) }
 
-    return new Response(JSON.stringify(result.documents || result), {
+    sql += ' ORDER BY createdAt DESC LIMIT ?'
+    params.push(limit)
+
+    const result = await env.DB.prepare(sql).bind(...params).all()
+    const items = result.results.map(item => ({
+      ...item,
+      images: JSON.parse(item.images || '[]')
+    }))
+
+    return new Response(JSON.stringify(items), {
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     })
   }
 
   if (request.method === 'POST') {
     const body = await request.json()
-    const doc = {
+    const now = new Date().toISOString()
+
+    const result = await env.DB.prepare(
+      'INSERT INTO items (title, category, type, price, description, contact, images, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).bind(
+      body.title,
+      body.category,
+      body.type || 'sell',
+      parseFloat(body.price) || 0,
+      body.description || '',
+      body.contact || '',
+      JSON.stringify(body.images || []),
+      now,
+      now
+    ).run()
+
+    const newItem = {
+      id: result.meta.last_row_id,
       title: body.title,
       category: body.category,
       type: body.type || 'sell',
       price: parseFloat(body.price) || 0,
-      description: body.description,
+      description: body.description || '',
       contact: body.contact || '',
       images: body.images || [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      createdAt: now,
+      updatedAt: now
     }
 
-    const result = await dataApi('insertOne', 'items', { document: doc })
-    return new Response(JSON.stringify({ _id: result.insertedId, ...doc }), {
+    return new Response(JSON.stringify(newItem), {
       status: 201,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     })

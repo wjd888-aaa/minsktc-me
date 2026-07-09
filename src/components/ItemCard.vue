@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="hover" class="item-card" @click="$router.push('/items/' + item._id)">
+  <el-card shadow="hover" class="item-card" @click="$router.push('/items/' + item.id)">
     <div class="card-img">
       <img :src="item.images?.[0] || 'https://via.placeholder.com/300x200?text=No+Image'" alt="" />
     </div>

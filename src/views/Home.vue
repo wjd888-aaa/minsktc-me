@@ -19,7 +19,7 @@
       <div v-if="loading" class="loading"><el-icon class="is-loading"><Loading /></el-icon> 加载中...</div>
       <div v-else-if="items.length === 0" class="empty">暂无信息</div>
       <div v-else class="items-grid">
-        <ItemCard v-for="item in items" :key="item._id" :item="item" />
+        <ItemCard v-for="item in items" :key="item.id" :item="item" />
       </div>
     </section>
   </div>
