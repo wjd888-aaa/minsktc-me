@@ -38,7 +38,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getItem } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
-import { MINSK_METRO } from '../data/metro.js'
+import { getMetroName } from '../data/metro.js'
 
 const route = useRoute()
 const item = ref(null)
@@ -46,7 +46,7 @@ const loading = ref(true)
 const showContact = ref(false)
 
 const typeLabel = computed(() => ({ sell: '出售', rent: '出租', buy: '求购' }[item.value?.type] || ''))
-function getMetroName(id) { return MINSK_METRO.find(s => s.id === id)?.name?.split('/')[0]?.trim() || '' }
+
 
 function timeAgo(date) {
   if (!date) return ''

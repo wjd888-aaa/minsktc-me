@@ -13,10 +13,9 @@
 </template>
 
 <script setup>
-import { MINSK_METRO } from '../data/metro.js'
+import { getMetroName } from '../data/metro.js'
 
 const props = defineProps({ item: Object })
-function getMetroName(id) { return MINSK_METRO.find(s => s.id === id)?.name?.split('/')[0]?.trim() || '' }
 function timeAgo(date) {
   if (!date) return ''
   const diff = Date.now() - new Date(date).getTime()

@@ -33,12 +33,12 @@
         <el-form-item label="附近地铁站">
           <el-select v-model="form.metro" placeholder="选择地铁站" filterable style="width:100%">
             <el-option-group v-for="line in metroLines" :key="line.key" :label="line.name">
-              <el-option v-for="s in line.stations" :key="s.id" :label="s.name" :value="s.id" />
+              <el-option v-for="s in line.stations" :key="s.id" :label="displayMetro(s)" :value="s.id" />
             </el-option-group>
           </el-select>
         </el-form-item>
         <el-form-item label="具体地址">
-          <el-input v-model="form.address" placeholder="街道、楼号、房间号等" />
+          <el-input v-model="form.address" placeholder="Введите адрес" />
         </el-form-item>
 
         <el-divider>图片</el-divider>
@@ -76,7 +76,7 @@ import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import { createItem } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
-import { MINSK_METRO, METRO_LINES } from '../data/metro.js'
+import { MINSK_METRO, METRO_LINES, displayMetro } from '../data/metro.js'
 
 const categories = [
   { key: 'electronics', name: '电子产品' },

@@ -5,7 +5,7 @@
       <div class="filters">
         <el-select v-model="metro" placeholder="全部地铁站" clearable filterable @change="load">
           <el-option-group v-for="line in metroLines" :key="line.key" :label="line.name">
-            <el-option v-for="s in line.stations" :key="s.id" :label="s.name" :value="s.id" />
+              <el-option v-for="s in line.stations" :key="s.id" :label="displayMetro(s)" :value="s.id" />
           </el-option-group>
         </el-select>
         <el-select v-model="category" placeholder="全部分类" clearable @change="load">
@@ -33,7 +33,7 @@ import { Loading } from '@element-plus/icons-vue'
 import { getItems } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import ItemCard from '../components/ItemCard.vue'
-import { MINSK_METRO, METRO_LINES } from '../data/metro.js'
+import { MINSK_METRO, METRO_LINES, displayMetro } from '../data/metro.js'
 
 const route = useRoute()
 const items = ref([])

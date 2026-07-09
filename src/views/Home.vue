@@ -11,7 +11,7 @@
       <div class="hero-metro">
         <el-select v-model="metro" placeholder="按地铁站筛选" clearable filterable style="width:300px" @change="goMetro">
           <el-option-group v-for="line in metroLines" :key="line.key" :label="line.name">
-            <el-option v-for="s in line.stations" :key="s.id" :label="s.name" :value="s.id" />
+            <el-option v-for="s in line.stations" :key="s.id" :label="displayMetro(s)" :value="s.id" />
           </el-option-group>
         </el-select>
       </div>
@@ -39,7 +39,7 @@ import { Loading } from '@element-plus/icons-vue'
 import { getItems } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import ItemCard from '../components/ItemCard.vue'
-import { MINSK_METRO, METRO_LINES } from '../data/metro.js'
+import { MINSK_METRO, METRO_LINES, displayMetro } from '../data/metro.js'
 
 const router = useRouter()
 const search = ref('')
