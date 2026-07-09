@@ -4,6 +4,7 @@ export async function onRequest(context) {
 
   const category = url.searchParams.get('category')
   const type = url.searchParams.get('type')
+  const metro = url.searchParams.get('metro')
   const search = url.searchParams.get('search')
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '20'), 50)
 
@@ -13,6 +14,7 @@ export async function onRequest(context) {
 
     if (category) { sql += ' AND category = ?'; params.push(category) }
     if (type) { sql += ' AND type = ?'; params.push(type) }
+    if (metro) { sql += ' AND metro = ?'; params.push(metro) }
     if (search) { sql += ' AND title LIKE ?'; params.push(`%${search}%`) }
 
     sql += ' ORDER BY createdAt DESC LIMIT ?'
@@ -34,7 +36,7 @@ export async function onRequest(context) {
     const now = new Date().toISOString()
 
     const result = await env.DB.prepare(
-      'INSERT INTO items (title, category, type, price, description, contact, images, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      'INSERT INTO items (title, category, type, price, description, contact, images, metro, address, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     ).bind(
       body.title,
       body.category,
@@ -43,6 +45,8 @@ export async function onRequest(context) {
       body.description || '',
       body.contact || '',
       JSON.stringify(body.images || []),
+      body.metro || '',
+      body.address || '',
       now,
       now
     ).run()
@@ -56,6 +60,8 @@ export async function onRequest(context) {
       description: body.description || '',
       contact: body.contact || '',
       images: body.images || [],
+      metro: body.metro || '',
+      address: body.address || '',
       createdAt: now,
       updatedAt: now
     }

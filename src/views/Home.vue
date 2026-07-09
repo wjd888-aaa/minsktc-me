@@ -8,6 +8,13 @@
         <el-input v-model="search" placeholder="搜索商品或房源..." class="search-input" clearable @keyup.enter="goSearch" />
         <el-button type="primary" @click="goSearch">搜索</el-button>
       </div>
+      <div class="hero-metro">
+        <el-select v-model="metro" placeholder="按地铁站筛选" clearable filterable style="width:300px" @change="goMetro">
+          <el-option-group v-for="line in metroLines" :key="line.key" :label="line.name">
+            <el-option v-for="s in line.stations" :key="s.id" :label="s.name" :value="s.id" />
+          </el-option-group>
+        </el-select>
+      </div>
     </section>
     <section class="categories">
       <el-card v-for="cat in categories" :key="cat.key" class="cat-card" shadow="hover" @click="$router.push('/items?cat=' + cat.key)">
@@ -32,9 +39,11 @@ import { Loading } from '@element-plus/icons-vue'
 import { getItems } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import ItemCard from '../components/ItemCard.vue'
+import { MINSK_METRO, METRO_LINES } from '../data/metro.js'
 
 const router = useRouter()
 const search = ref('')
+const metro = ref('')
 const items = ref([])
 const loading = ref(true)
 
@@ -47,8 +56,19 @@ const categories = [
   { key: 'service', name: '生活服务', icon: '🔧' }
 ]
 
+const metroLines = Object.entries(METRO_LINES).map(([key, val]) => ({
+  key,
+  name: val.name,
+  stations: MINSK_METRO.filter(s => s.line === key)
+}))
+
 function goSearch() {
-  router.push('/items?search=' + encodeURIComponent(search.value))
+  const q = '/items?search=' + encodeURIComponent(search.value)
+  router.push(metro.value ? q + '&metro=' + metro.value : q)
+}
+
+function goMetro() {
+  router.push('/items?metro=' + metro.value)
 }
 
 onMounted(async () => {
@@ -68,6 +88,8 @@ onMounted(async () => {
 .hero h1 { font-size: 2em; margin-bottom: 10px; }
 .hero p { margin-bottom: 24px; opacity: 0.9; }
 .hero-actions { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; }
+.hero-metro { margin-top: 16px; }
+.hero-metro .el-select { --el-select-input-color: #fff; }
 .search-input { flex: 1; }
 .categories { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; padding: 24px; max-width: 1200px; margin: 0 auto; }
 .cat-card { cursor: pointer; text-align: center; }

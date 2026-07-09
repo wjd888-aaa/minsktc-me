@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS items (
   description TEXT,
   contact TEXT,
   images TEXT DEFAULT '[]',
+  metro TEXT DEFAULT '',
+  address TEXT DEFAULT '',
   createdAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL
 );
