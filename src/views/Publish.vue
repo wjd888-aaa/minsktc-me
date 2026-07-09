@@ -76,6 +76,10 @@ const imageUrl = ref('')
 const submitting = ref(false)
 const success = ref(false)
 
+const profile = JSON.parse(localStorage.getItem('profile') || '{}')
+if (profile.phone) form.contact = profile.phone
+if (profile.wechat && !form.contact) form.contact = profile.wechat
+
 function addImage() {
   if (imageUrl.value && !form.images.includes(imageUrl.value)) {
     form.images.push(imageUrl.value)

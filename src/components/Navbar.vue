@@ -8,14 +8,21 @@
         <router-link to="/publish">发布信息</router-link>
       </nav>
       <router-link to="/login" class="login-btn">
-        <el-button size="small">{{ user || '登录' }}</el-button>
+        <el-button size="small">{{ user || '我的' }}</el-button>
       </router-link>
     </div>
   </header>
 </template>
 
 <script setup>
-const user = '' // TODO: auth
+import { ref, onMounted } from 'vue'
+
+const user = ref('')
+
+onMounted(() => {
+  const p = JSON.parse(localStorage.getItem('profile') || '{}')
+  user.value = p.name || p.phone || ''
+})
 </script>
 
 <style scoped>
