@@ -4,4 +4,4 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "minsktc-db"
-database_id = ""
+database_id = "3223e797-f87e-4535-ae7d-86e44a753733"
