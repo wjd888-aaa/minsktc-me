@@ -66,7 +66,21 @@
           <el-button type="primary" native-type="submit" :loading="submitting" style="width:100%">发布</el-button>
         </el-form-item>
       </el-form>
-      <el-alert v-if="success" type="success" show-icon :closable="true" title="发布成功！" />
+      <div v-if="success" class="success-box">
+        <el-alert type="success" show-icon :closable="true" title="发布成功！" />
+        <el-alert type="warning" show-icon :closable="false" style="margin-top:12px">
+          <template #title>
+            <div style="font-size:14px">⚠️ 请保存好下方删除链接（仅此一次）</div>
+          </template>
+        </el-alert>
+        <div class="delete-link-box">
+          <el-input :model-value="deleteLink" readonly>
+            <template #append>
+              <el-button @click="copyLink">复制</el-button>
+            </template>
+          </el-input>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -109,6 +123,7 @@ const fileInput = ref(null)
 const uploading = ref(false)
 const submitting = ref(false)
 const success = ref(false)
+const deleteLink = ref('')
 
 const profile = JSON.parse(localStorage.getItem('profile') || '{}')
 if (profile.phone) form.contact = profile.phone
@@ -143,14 +158,25 @@ async function submit() {
   }
   submitting.value = true
   try {
-    await createItem(form)
+    const res = await createItem(form)
+    const item = res.data
     success.value = true
+    const link = `${window.location.origin}/items/${item.id}?token=${item.deleteToken}`
+    deleteLink.value = link
+    const tokens = JSON.parse(localStorage.getItem('deleteTokens') || '{}')
+    tokens[item.id] = item.deleteToken
+    localStorage.setItem('deleteTokens', JSON.stringify(tokens))
     Object.assign(form, { title: '', category: '', type: 'sell', price: '', description: '', contact: '', metro: '', address: '', images: [] })
   } catch (e) {
     ElMessage.error('发布失败')
   } finally {
     submitting.value = false
   }
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(deleteLink.value)
+  ElMessage.success('已复制删除链接')
 }
 </script>
 
@@ -164,4 +190,6 @@ async function submit() {
 .img-item img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; border: 1px solid #eee; }
 .img-item .el-button { position: absolute; top: -8px; right: -8px; }
 .uploading-tip { color: #999; font-size: 0.85em; margin-top: 4px; }
+.success-box { max-width: 640px; margin: 24px auto; padding: 0 24px; }
+.delete-link-box { margin-top: 12px; }
 </style>

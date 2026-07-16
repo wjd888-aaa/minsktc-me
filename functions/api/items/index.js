@@ -21,10 +21,10 @@ export async function onRequest(context) {
     params.push(limit)
 
     const result = await env.DB.prepare(sql).bind(...params).all()
-    const items = result.results.map(item => ({
-      ...item,
-      images: JSON.parse(item.images || '[]')
-    }))
+    const items = result.results.map(item => {
+      const { deleteToken, ...rest } = item
+      return { ...rest, images: JSON.parse(rest.images || '[]') }
+    })
 
     return new Response(JSON.stringify(items), {
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
@@ -34,9 +34,10 @@ export async function onRequest(context) {
   if (request.method === 'POST') {
     const body = await request.json()
     const now = new Date().toISOString()
+    const deleteToken = crypto.randomUUID()
 
     const result = await env.DB.prepare(
-      'INSERT INTO items (title, category, type, price, description, contact, images, metro, address, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      'INSERT INTO items (title, category, type, price, description, contact, images, metro, address, deleteToken, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     ).bind(
       body.title,
       body.category,
@@ -47,6 +48,7 @@ export async function onRequest(context) {
       JSON.stringify(body.images || []),
       body.metro || '',
       body.address || '',
+      deleteToken,
       now,
       now
     ).run()
@@ -62,6 +64,7 @@ export async function onRequest(context) {
       images: body.images || [],
       metro: body.metro || '',
       address: body.address || '',
+      deleteToken,
       createdAt: now,
       updatedAt: now
     }

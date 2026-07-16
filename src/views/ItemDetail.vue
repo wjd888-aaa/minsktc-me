@@ -27,6 +27,13 @@
             {{ showContact ? '隐藏' : '查看联系方式' }}
           </el-button>
           <p v-if="showContact" style="margin-top:8px;font-size:1.2em;text-align:center">{{ item.contact || '暂无' }}</p>
+          <el-divider />
+          <el-popconfirm title="确定要删除这条信息吗？" @confirm="handleDelete" width="220">
+            <template #reference>
+              <el-button type="danger" plain style="width:100%" :disabled="!canDelete">删除此信息</el-button>
+            </template>
+          </el-popconfirm>
+          <p v-if="!canDelete" style="margin-top:6px;font-size:0.85em;color:#999;text-align:center">仅发布者可删除</p>
         </el-card>
       </div>
     </div>
@@ -35,15 +42,19 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { getItem } from '../api/index.js'
+import { useRoute, useRouter } from 'vue-router'
+import { getItem, deleteItem } from '../api/index.js'
+import { ElMessage } from 'element-plus'
 import Navbar from '../components/Navbar.vue'
 import { getMetroName } from '../data/metro.js'
 
 const route = useRoute()
+const router = useRouter()
 const item = ref(null)
 const loading = ref(true)
 const showContact = ref(false)
+const deleteToken = ref('')
+const canDelete = computed(() => !!deleteToken.value)
 
 const typeLabel = computed(() => ({ sell: '出售', rent: '出租', buy: '求购' }[item.value?.type] || ''))
 
@@ -58,10 +69,32 @@ function timeAgo(date) {
   return Math.floor(hours / 24) + '天前'
 }
 
+async function handleDelete() {
+  try {
+    await deleteItem(route.params.id, deleteToken.value)
+    ElMessage.success('已删除')
+    router.push('/items')
+  } catch (e) {
+    ElMessage.error('删除失败，请检查权限')
+  }
+}
+
 onMounted(async () => {
   try {
     const res = await getItem(route.params.id)
     item.value = res.data
+
+    const stored = JSON.parse(localStorage.getItem('deleteTokens') || '{}')
+
+    if (item.value.deleteToken) {
+      deleteToken.value = item.value.deleteToken
+      stored[route.params.id] = item.value.deleteToken
+      localStorage.setItem('deleteTokens', JSON.stringify(stored))
+    }
+
+    if (route.query.token) {
+      deleteToken.value = route.query.token
+    }
   } catch (e) {
     console.error(e)
   } finally {
