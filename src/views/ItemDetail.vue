@@ -6,7 +6,7 @@
     <div v-else class="detail-inner">
       <div class="detail-main">
         <div v-if="item.images?.length" class="detail-img-wrap">
-          <img v-for="(img, i) in item.images" :key="i" :src="img" class="detail-img" />
+          <div v-for="(img, i) in item.images" :key="i" class="detail-img" :style="{ backgroundImage: 'url(' + img + ')' }"></div>
         </div>
         <div class="detail-info">
           <h1>{{ item.title }}</h1>
@@ -100,7 +100,7 @@ onMounted(async () => {
 .detail-inner { display: flex; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 24px; }
 .detail-main { flex: 1; }
 .detail-img-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-.detail-img { width: 100%; max-height: 600px; object-fit: contain; background: #f0f0f0; border-radius: 8px; }
+.detail-img { width: 100%; height: 0; padding-bottom: 56.25%; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #f0f0f0; border-radius: 8px; }
 .detail-info { padding: 0; }
 .detail-info h1 { font-size: 1.5em; margin-bottom: 8px; }
 .detail-price { font-size: 1.8em; color: #e74c3c; font-weight: 700; }
