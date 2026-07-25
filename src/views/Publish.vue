@@ -49,7 +49,7 @@
               <input type="file" accept="image/*" multiple ref="fileInput" @change="handleFiles" />
               <span class="file-label">选择图片</span>
             </span>
-            <span class="upload-hint">支持 JPG/PNG，单张不超过 10MB</span>
+            <span class="upload-hint">支持 JPG/PNG，自动压缩至 1200px</span>
           </div>
           <div class="image-preview" v-if="form.images.length">
             <div v-for="(img, i) in form.images" :key="i" class="img-item">
@@ -155,13 +155,23 @@ onMounted(() => {
   if (isEdit.value) loadItem()
 })
 
-async function uploadFile(file) {
-  const fd = new FormData()
-  fd.append('file', file)
-  const res = await fetch('/api/upload', { method: 'POST', body: fd })
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.error || '上传失败')
-  return data.url
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      let w = img.width, h = img.height
+      const max = 1200
+      if (w > max) { h = h * max / w; w = max }
+      if (h > max) { w = w * max / h; h = max }
+      canvas.width = w; canvas.height = h
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0, w, h)
+      resolve(canvas.toDataURL('image/jpeg', 0.7))
+    }
+    img.onerror = reject
+    img.src = URL.createObjectURL(file)
+  })
 }
 
 async function handleFiles(e) {
@@ -170,17 +180,11 @@ async function handleFiles(e) {
   uploading.value = true
   let done = 0
   for (const file of files) {
-    if (file.size > 10 * 1024 * 1024) {
-      ElMessage.warning(file.name + ' 超过 10MB 限制')
-      done++
-      if (done === files.length) uploading.value = false
-      continue
-    }
     try {
-      const url = await uploadFile(file)
-      form.images.push(url)
+      const dataUrl = await compressImage(file)
+      form.images.push(dataUrl)
     } catch (e) {
-      ElMessage.error(file.name + ' 上传失败: ' + e.message)
+      ElMessage.error(file.name + ' 处理失败')
     }
     done++
     if (done === files.length) uploading.value = false
