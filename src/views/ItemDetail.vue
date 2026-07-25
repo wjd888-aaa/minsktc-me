@@ -5,11 +5,15 @@
     <div v-else-if="!item" class="loading">信息不存在</div>
     <div v-else class="detail-inner">
       <div class="detail-main">
-        <el-carousel v-if="item.images?.length" height="400px">
-          <el-carousel-item v-for="img in item.images" :key="img">
-            <img :src="img" class="detail-img" />
-          </el-carousel-item>
-        </el-carousel>
+        <div v-if="item.images?.length" class="detail-img-wrap">
+          <img
+            v-for="(img, i) in item.images" :key="i"
+            :src="img"
+            class="detail-img"
+            :class="{ active: currentImg === i }"
+            @click="currentImg = i"
+          />
+        </div>
         <div class="detail-info">
           <h1>{{ item.title }}</h1>
           <p class="detail-price">¥{{ item.price }}</p>
@@ -17,6 +21,12 @@
           <p v-if="item.metro" class="detail-metro">🚇 {{ getMetroName(item.metro) }} {{ item.address ? '— ' + item.address : '' }}</p>
           <el-divider />
           <p class="detail-desc">{{ item.description }}</p>
+
+          <div v-if="isOwner" class="owner-actions">
+            <el-divider />
+            <el-button type="primary" @click="editItem">✏️ 编辑</el-button>
+            <el-button type="danger" @click="confirmDelete">🗑️ 删除</el-button>
+          </div>
         </div>
       </div>
       <div class="detail-side">
@@ -35,18 +45,27 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { getItem } from '../api/index.js'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessageBox, ElMessage } from 'element-plus'
+import { getItem, deleteItem } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import { getMetroName } from '../data/metro.js'
 
 const route = useRoute()
+const router = useRouter()
 const item = ref(null)
 const loading = ref(true)
 const showContact = ref(false)
+const currentImg = ref(0)
+
+const profile = JSON.parse(localStorage.getItem('profile') || '{}')
 
 const typeLabel = computed(() => ({ sell: '出售', rent: '出租', buy: '求购' }[item.value?.type] || ''))
 
+const isOwner = computed(() => {
+  if (!item.value) return false
+  return profile.phone && item.value.phone === profile.phone
+})
 
 function timeAgo(date) {
   if (!date) return ''
@@ -56,6 +75,21 @@ function timeAgo(date) {
   const hours = Math.floor(mins / 60)
   if (hours < 24) return hours + '小时前'
   return Math.floor(hours / 24) + '天前'
+}
+
+function editItem() {
+  router.push('/publish?id=' + item.value.id)
+}
+
+async function confirmDelete() {
+  try {
+    await ElMessageBox.confirm('确定要删除这条信息吗？', '确认删除', { confirmButtonText: '删除', cancelButtonText: '取消', type: 'warning' })
+    await deleteItem(item.value.id, profile.phone)
+    ElMessage.success('已删除')
+    router.push('/')
+  } catch (e) {
+    if (e !== 'cancel') ElMessage.error('删除失败，请检查权限')
+  }
 }
 
 onMounted(async () => {
@@ -73,12 +107,16 @@ onMounted(async () => {
 <style scoped>
 .detail-inner { display: flex; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 24px; }
 .detail-main { flex: 1; }
-.detail-img { width: 100%; height: 100%; object-fit: cover; }
-.detail-info { padding: 20px 0; }
+.detail-img-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.detail-img { width: 100%; max-height: 500px; object-fit: contain; background: #f0f0f0; border-radius: 8px; cursor: pointer; display: none; }
+.detail-img.active { display: block; }
+.detail-img:only-child { display: block; }
+.detail-info { padding: 0; }
 .detail-info h1 { font-size: 1.5em; margin-bottom: 8px; }
 .detail-price { font-size: 1.8em; color: #e74c3c; font-weight: 700; }
 .detail-meta { color: #999; font-size: 0.9em; margin: 8px 0; }
 .detail-desc { line-height: 1.7; color: #555; }
 .detail-side { width: 320px; flex-shrink: 0; }
 .loading { text-align: center; padding: 60px; color: #999; }
+.owner-actions { display: flex; gap: 12px; margin-top: 8px; }
 </style>

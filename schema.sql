@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS items (
   images TEXT DEFAULT '[]',
   metro TEXT DEFAULT '',
   address TEXT DEFAULT '',
+  phone TEXT DEFAULT '',
   createdAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL
 );

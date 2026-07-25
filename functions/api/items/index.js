@@ -35,8 +35,10 @@ export async function onRequest(context) {
     const body = await request.json()
     const now = new Date().toISOString()
 
+    const phone = body.phone || ''
+
     const result = await env.DB.prepare(
-      'INSERT INTO items (title, category, type, price, description, contact, images, metro, address, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      'INSERT INTO items (title, category, type, price, description, contact, images, metro, address, phone, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     ).bind(
       body.title,
       body.category,
@@ -47,6 +49,7 @@ export async function onRequest(context) {
       JSON.stringify(body.images || []),
       body.metro || '',
       body.address || '',
+      phone,
       now,
       now
     ).run()
@@ -62,6 +65,7 @@ export async function onRequest(context) {
       images: body.images || [],
       metro: body.metro || '',
       address: body.address || '',
+      phone: phone,
       createdAt: now,
       updatedAt: now
     }

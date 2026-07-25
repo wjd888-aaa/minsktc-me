@@ -2,7 +2,7 @@
   <div class="publish-page">
     <Navbar />
     <div class="form-wrap">
-      <h2>发布信息</h2>
+      <h2>{{ isEdit ? '编辑信息' : '发布信息' }}</h2>
       <el-form :model="form" label-width="100px" @submit.prevent="submit">
         <el-form-item label="标题" required>
           <el-input v-model="form.title" placeholder="请输入标题" />
@@ -63,20 +63,29 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" native-type="submit" :loading="submitting" style="width:100%">发布</el-button>
+          <el-button type="primary" native-type="submit" :loading="submitting" style="width:100%">
+            {{ isEdit ? '保存修改' : '发布' }}
+          </el-button>
         </el-form-item>
       </el-form>
-      <el-alert v-if="success" type="success" show-icon :closable="true" title="发布成功！" />
+      <el-alert v-if="success" type="success" show-icon :closable="true" :title="isEdit ? '修改成功！' : '发布成功！'" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { createItem } from '../api/index.js'
+import { createItem, getItem, updateItem } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import { MINSK_METRO, METRO_LINES, displayMetro } from '../data/metro.js'
+
+const route = useRoute()
+const router = useRouter()
+
+const isEdit = computed(() => !!route.query.id)
+const editId = computed(() => parseInt(route.query.id))
 
 const categories = [
   { key: 'electronics', name: '电子产品' },
@@ -111,8 +120,31 @@ const submitting = ref(false)
 const success = ref(false)
 
 const profile = JSON.parse(localStorage.getItem('profile') || '{}')
-if (profile.phone) form.contact = profile.phone
-if (profile.wechat && !form.contact) form.contact = profile.wechat
+
+async function loadItem() {
+  try {
+    const res = await getItem(editId.value)
+    const d = res.data
+    form.title = d.title
+    form.category = d.category
+    form.type = d.type
+    form.price = d.price
+    form.description = d.description
+    form.contact = d.contact
+    form.metro = d.metro || ''
+    form.address = d.address || ''
+    form.images = d.images || []
+  } catch (e) {
+    ElMessage.error('加载失败')
+    router.push('/')
+  }
+}
+
+onMounted(() => {
+  if (profile.phone) form.contact = profile.phone
+  if (profile.wechat && !form.contact) form.contact = profile.wechat
+  if (isEdit.value) loadItem()
+})
 
 function handleFiles(e) {
   const files = e.target.files
@@ -143,11 +175,20 @@ async function submit() {
   }
   submitting.value = true
   try {
-    await createItem(form)
+    const payload = { ...form, price: parseFloat(form.price) || 0, phone: profile.phone || '' }
+
+    if (isEdit.value) {
+      await updateItem(editId.value, payload)
+    } else {
+      await createItem(payload)
+    }
+
     success.value = true
-    Object.assign(form, { title: '', category: '', type: 'sell', price: '', description: '', contact: '', metro: '', address: '', images: [] })
+    if (!isEdit.value) {
+      Object.assign(form, { title: '', category: '', type: 'sell', price: '', description: '', contact: '', metro: '', address: '', images: [] })
+    }
   } catch (e) {
-    ElMessage.error('发布失败')
+    ElMessage.error(isEdit.value ? '保存失败' : '发布失败')
   } finally {
     submitting.value = false
   }
