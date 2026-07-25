@@ -45,8 +45,8 @@
 
         <el-form-item label="上传图片">
           <div class="upload-area">
-            <input type="file" accept="image/*" multiple style="display:none" ref="fileInput" @change="handleFiles" />
-            <el-button type="button" @click="pickFiles">选择图片</el-button>
+            <input type="file" accept="image/*" multiple id="imgPicker" ref="fileInput" @change="handleFiles" style="display:none" />
+            <label for="imgPicker" class="file-label">选择图片</label>
             <span class="upload-hint">支持 JPG/PNG，单张不超过 2MB</span>
           </div>
           <div class="image-preview" v-if="form.images.length">
@@ -109,7 +109,6 @@ const form = reactive({
 })
 
 const fileInput = ref(null)
-function pickFiles() { fileInput.value?.click() }
 const uploading = ref(false)
 const submitting = ref(false)
 const success = ref(false)
@@ -208,6 +207,8 @@ async function submit() {
 <style scoped>
 .form-wrap { max-width: 640px; margin: 0 auto; padding: 24px; }
 .form-wrap h2 { margin-bottom: 20px; }
+.file-label { display: inline-flex; align-items: center; justify-content: center; padding: 8px 20px; background: #fff; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 14px; color: #606266; cursor: pointer; user-select: none; transition: all .2s; }
+.file-label:hover { color: #409eff; border-color: #409eff; }
 .upload-area { display: flex; align-items: center; gap: 12px; }
 .upload-hint { color: #999; font-size: 0.85em; }
 .image-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
