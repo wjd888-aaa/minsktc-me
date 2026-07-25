@@ -23,10 +23,8 @@
             <p class="section-label">描述</p>
             <p class="detail-desc">{{ item.description }}</p>
           </div>
-          <div class="detail-section">
-            <p class="section-label">联系方式</p>
-            <p class="detail-contact">{{ item.contact || '未提供' }}</p>
-            <el-button type="primary" size="large" style="width:100%;margin-top:8px" @click="showContact = !showContact">
+          <div class="detail-section" style="padding:12px 24px">
+            <el-button type="primary" size="large" style="width:100%" @click="showContact = !showContact">
               {{ showContact ? '收起' : '查看联系方式' }}
             </el-button>
             <p v-if="showContact" class="contact-reveal">{{ item.contact || '暂无' }}</p>
@@ -136,7 +134,6 @@ onMounted(async () => {
 .detail-section { background: #fafafa; border-radius: 12px; padding: 24px; }
 .section-label { font-size: .85em; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
 .detail-desc { line-height: 1.8; color: #333; font-size: 1em; white-space: pre-wrap; }
-.detail-contact { font-size: 1.2em; font-weight: 600; color: #1a1a1a; }
 .contact-reveal { margin-top: 12px; font-size: 1.3em; font-weight: 700; color: #e74c3c; text-align: center; padding: 12px; background: #fff; border-radius: 8px; }
 .owner-actions { display: flex; gap: 16px; }
 .owner-actions .el-button { flex: 1; }
