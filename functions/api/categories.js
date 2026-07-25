@@ -1,12 +1,25 @@
 const CATEGORIES = [
-  { key: 'electronics', name: '电子产品', icon: '📱' },
-  { key: 'furniture', name: '家具日用', icon: '🛋️' },
-  { key: 'clothing', name: '服装鞋包', icon: '👗' },
-  { key: 'beauty', name: '美妆配饰', icon: '💄' },
-  { key: 'instrument', name: '中西乐器', icon: '🎵' },
-  { key: 'books', name: '教材书籍', icon: '📚' },
-  { key: 'rental', name: '房屋出租', icon: '🏠' },
-  { key: 'service', name: '生活服务', icon: '🔧' }
+  { key: 'digital', name: '数码', icon: '💻' },
+  { key: 'furniture', name: '家具', icon: '🛋️' },
+  { key: 'appliance', name: '家电', icon: '📺' },
+  { key: 'textile', name: '家纺', icon: '🧵' },
+  { key: 'menswear', name: '男装', icon: '👔' },
+  { key: 'womenswear', name: '女装', icon: '👗' },
+  { key: 'shoes', name: '鞋靴', icon: '👟' },
+  { key: 'accessory', name: '饰品', icon: '💍' },
+  { key: 'luggage', name: '箱包', icon: '🧳' },
+  { key: 'sports', name: '运动', icon: '⚽' },
+  { key: 'medicine', name: '医药', icon: '💊' },
+  { key: 'food', name: '食品', icon: '🍜' },
+  { key: 'seasoning', name: '调料', icon: '🌶️' },
+  { key: 'toiletries', name: '洗护', icon: '🧴' },
+  { key: 'beauty', name: '美妆', icon: '💄' },
+  { key: 'instrument', name: '乐器', icon: '🎵' },
+  { key: 'books', name: '书籍', icon: '📚' },
+  { key: 'camping', name: '露营', icon: '⛺' },
+  { key: 'gift', name: '礼品', icon: '🎁' },
+  { key: 'service', name: '服务', icon: '🔧' },
+  { key: 'rental', name: '租房', icon: '🏠' }
 ]
 
 export async function onRequest(context) {

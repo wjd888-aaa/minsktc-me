@@ -80,6 +80,7 @@ import { ElMessage } from 'element-plus'
 import { createItem, getItem, updateItem } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import { MINSK_METRO, METRO_LINES, displayMetro } from '../data/metro.js'
+import { ALL_CATEGORIES } from '../data/categories.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -87,16 +88,7 @@ const router = useRouter()
 const isEdit = computed(() => !!route.query.id)
 const editId = computed(() => parseInt(route.query.id))
 
-const categories = [
-  { key: 'electronics', name: '电子产品' },
-  { key: 'furniture', name: '家具日用' },
-  { key: 'clothing', name: '服装鞋包' },
-  { key: 'beauty', name: '美妆配饰' },
-  { key: 'instrument', name: '中西乐器' },
-  { key: 'books', name: '教材书籍' },
-  { key: 'rental', name: '房屋出租' },
-  { key: 'service', name: '生活服务' }
-]
+const categories = ALL_CATEGORIES
 
 const metroLines = Object.entries(METRO_LINES).map(([key, val]) => ({
   key,

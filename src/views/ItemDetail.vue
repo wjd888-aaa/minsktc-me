@@ -15,7 +15,7 @@
         <div class="detail-header">
           <h1>{{ item.title }}</h1>
           <p class="detail-price">¥{{ item.price }}</p>
-          <p class="detail-meta">{{ item.category }} · {{ typeLabel }} · {{ timeAgo(item.createdAt) }}</p>
+          <p class="detail-meta">{{ getCategoryName(item.category) }} · {{ typeLabel }} · {{ timeAgo(item.createdAt) }}</p>
           <p v-if="item.metro" class="detail-metro">🚇 {{ getMetroName(item.metro) }} {{ item.address ? '— ' + item.address : '' }}</p>
         </div>
         <div class="detail-body">
@@ -54,6 +54,7 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import { getItem, deleteItem } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import { getMetroName } from '../data/metro.js'
+import { getCategoryName } from '../data/categories.js'
 
 const route = useRoute()
 const router = useRouter()

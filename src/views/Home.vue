@@ -17,9 +17,18 @@
       </div>
     </section>
     <section class="categories">
-      <el-card v-for="cat in categories" :key="cat.key" class="cat-card" shadow="hover" @click="$router.push('/items?cat=' + cat.key)">
-        <h3>{{ cat.icon }} {{ cat.name }}</h3>
-      </el-card>
+      <div class="cat-grid">
+        <div v-for="cat in mainCategories" :key="cat.key" class="cat-card" @click="$router.push('/items?cat=' + cat.key)">
+          <span class="cat-icon">{{ cat.icon }}</span>
+          <span class="cat-name">{{ cat.name }}</span>
+        </div>
+      </div>
+      <div class="cat-extra-row">
+        <div v-for="cat in extraCategories" :key="cat.key" class="cat-card cat-card-extra" @click="$router.push('/items?cat=' + cat.key)">
+          <span class="cat-icon">{{ cat.icon }}</span>
+          <span class="cat-name">{{ cat.name }}</span>
+        </div>
+      </div>
     </section>
     <section class="recent">
       <h2>最新发布</h2>
@@ -40,23 +49,15 @@ import { getItems } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import ItemCard from '../components/ItemCard.vue'
 import { MINSK_METRO, METRO_LINES, displayMetro } from '../data/metro.js'
+import { MAIN_CATEGORIES, EXTRA_CATEGORIES } from '../data/categories.js'
 
 const router = useRouter()
 const search = ref('')
 const metro = ref('')
 const items = ref([])
 const loading = ref(true)
-
-const categories = [
-  { key: 'electronics', name: '电子产品', icon: '📱' },
-  { key: 'furniture', name: '家具日用', icon: '🛋️' },
-  { key: 'clothing', name: '服装鞋包', icon: '👗' },
-  { key: 'beauty', name: '美妆配饰', icon: '💄' },
-  { key: 'instrument', name: '中西乐器', icon: '🎵' },
-  { key: 'books', name: '教材书籍', icon: '📚' },
-  { key: 'rental', name: '房屋出租', icon: '🏠' },
-  { key: 'service', name: '生活服务', icon: '🔧' }
-]
+const mainCategories = MAIN_CATEGORIES
+const extraCategories = EXTRA_CATEGORIES
 
 const metroLines = Object.entries(METRO_LINES).map(([key, val]) => ({
   key,
@@ -93,9 +94,15 @@ onMounted(async () => {
 .hero-metro { margin-top: 16px; }
 .hero-metro .el-select { --el-select-input-color: #fff; }
 .search-input { flex: 1; }
-.categories { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; padding: 24px; max-width: 1200px; margin: 0 auto; }
-.cat-card { cursor: pointer; text-align: center; }
-.cat-card h3 { margin: 0; font-size: 1em; }
+.categories { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.cat-card { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 8px; border-radius: 16px; background: #f8f8f8; cursor: pointer; transition: all .25s; }
+.cat-card:hover { background: #f0f0f0; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+.cat-icon { font-size: 1.6em; line-height: 1; }
+.cat-name { font-size: 0.85em; color: #444; font-weight: 500; letter-spacing: 0.02em; }
+.cat-extra-row { display: flex; gap: 14px; justify-content: center; padding-top: 14px; border-top: 1px solid #eee; }
+.cat-card-extra { flex-direction: row; padding: 10px 24px; border-radius: 100px; background: #fafafa; }
+.cat-card-extra:hover { background: #f0f0f0; }
 .recent { max-width: 1200px; margin: 0 auto; padding: 0 24px 40px; }
 .recent h2 { margin-bottom: 16px; }
 .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }

@@ -6,7 +6,7 @@
     <div class="card-body">
       <h3>{{ item.title }}</h3>
       <p class="price">¥{{ item.price }}</p>
-      <p class="meta">{{ item.category }} · {{ timeAgo(item.createdAt) }}</p>
+      <p class="meta">{{ getCategoryName(item.category) }} · {{ timeAgo(item.createdAt) }}</p>
       <p v-if="item.metro" class="metro-tag">🚇 {{ getMetroName(item.metro) }}</p>
     </div>
   </el-card>
@@ -14,6 +14,7 @@
 
 <script setup>
 import { getMetroName } from '../data/metro.js'
+import { getCategoryName } from '../data/categories.js'
 
 const props = defineProps({ item: Object })
 function timeAgo(date) {
