@@ -63,13 +63,13 @@ const loading = ref(true)
 const showContact = ref(false)
 const lightboxShow = ref(false)
 const lightboxIndex = ref(0)
-const profile = JSON.parse(localStorage.getItem('profile') || '{}')
 
 const typeLabel = computed(() => ({ sell: '出售', rent: '出租', buy: '求购' }[item.value?.type] || ''))
 
 const isOwner = computed(() => {
   if (!item.value) return false
-  return profile.phone && item.value.phone === profile.phone
+  const p = JSON.parse(localStorage.getItem('profile') || '{}')
+  return !!(p.phone && (item.value.phone === p.phone || item.value.contact === p.phone))
 })
 
 function openLightbox(i) { lightboxIndex.value = i; lightboxShow.value = true }
@@ -92,8 +92,9 @@ function editItem() {
 
 async function confirmDelete() {
   try {
+    const p = JSON.parse(localStorage.getItem('profile') || '{}')
     await ElMessageBox.confirm('确定要删除这条信息吗？', '确认删除', { confirmButtonText: '删除', cancelButtonText: '取消', type: 'warning' })
-    await deleteItem(item.value.id, profile.phone)
+    await deleteItem(item.value.id, p.phone)
     ElMessage.success('已删除')
     router.push('/')
   } catch (e) {
