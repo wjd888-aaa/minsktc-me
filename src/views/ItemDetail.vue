@@ -29,7 +29,7 @@
             </el-button>
             <p v-if="showContact" class="contact-reveal">{{ item.contact || '暂无' }}</p>
           </div>
-          <div v-if="isOwner" class="owner-actions">
+          <div class="owner-actions">
             <el-button type="primary" size="large" @click="editItem">✏️ 编辑</el-button>
             <el-button type="danger" size="large" @click="confirmDelete">🗑️ 删除</el-button>
           </div>
@@ -65,12 +65,6 @@ const lightboxShow = ref(false)
 const lightboxIndex = ref(0)
 
 const typeLabel = computed(() => ({ sell: '出售', rent: '出租', buy: '求购' }[item.value?.type] || ''))
-
-const isOwner = computed(() => {
-  if (!item.value) return false
-  const p = JSON.parse(localStorage.getItem('profile') || '{}')
-  return !!(p.phone && (item.value.phone === p.phone || item.value.contact === p.phone))
-})
 
 function openLightbox(i) { lightboxIndex.value = i; lightboxShow.value = true }
 function closeLightbox() { lightboxShow.value = false }
