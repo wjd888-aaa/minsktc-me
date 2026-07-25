@@ -18,14 +18,14 @@ export async function onRequest(context) {
   }
 
   if (request.method === 'DELETE') {
-    const item = await env.DB.prepare('SELECT phone FROM items WHERE id = ?').bind(id).first()
+    const item = await env.DB.prepare('SELECT phone, contact FROM items WHERE id = ?').bind(id).first()
     if (!item) {
       return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
     }
 
     const url = new URL(request.url)
     const callerPhone = url.searchParams.get('phone') || ''
-    if (!callerPhone || item.phone !== callerPhone) {
+    if (!callerPhone || (item.phone !== callerPhone && item.contact !== callerPhone)) {
       return new Response(JSON.stringify({ error: '无权限删除' }), { status: 403, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
     }
 
@@ -36,20 +36,20 @@ export async function onRequest(context) {
   }
 
   if (request.method === 'PATCH') {
-    const item = await env.DB.prepare('SELECT phone FROM items WHERE id = ?').bind(id).first()
+    const item = await env.DB.prepare('SELECT phone, contact FROM items WHERE id = ?').bind(id).first()
     if (!item) {
       return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
     }
 
     const body = await request.json()
     const callerPhone = body.phone || ''
-    if (!callerPhone || item.phone !== callerPhone) {
+    if (!callerPhone || (item.phone !== callerPhone && item.contact !== callerPhone)) {
       return new Response(JSON.stringify({ error: '无权限编辑' }), { status: 403, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
     }
 
     const now = new Date().toISOString()
     await env.DB.prepare(
-      `UPDATE items SET title = ?, category = ?, type = ?, price = ?, description = ?, contact = ?, images = ?, metro = ?, address = ?, updatedAt = ? WHERE id = ?`
+      `UPDATE items SET title = ?, category = ?, type = ?, price = ?, description = ?, contact = ?, images = ?, metro = ?, address = ?, phone = ?, updatedAt = ? WHERE id = ?`
     ).bind(
       body.title,
       body.category,
@@ -60,6 +60,7 @@ export async function onRequest(context) {
       JSON.stringify(body.images || []),
       body.metro || '',
       body.address || '',
+      callerPhone,
       now,
       id
     ).run()
