@@ -51,6 +51,8 @@ const categories = [
   { key: 'electronics', name: '电子产品', icon: '📱' },
   { key: 'furniture', name: '家具日用', icon: '🛋️' },
   { key: 'clothing', name: '服装鞋包', icon: '👗' },
+  { key: 'beauty', name: '美妆配饰', icon: '💄' },
+  { key: 'instrument', name: '中西乐器', icon: '🎵' },
   { key: 'books', name: '教材书籍', icon: '📚' },
   { key: 'rental', name: '房屋出租', icon: '🏠' },
   { key: 'service', name: '生活服务', icon: '🔧' }

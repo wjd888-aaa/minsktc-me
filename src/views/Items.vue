@@ -46,6 +46,8 @@ const categories = [
   { key: 'electronics', name: '电子产品' },
   { key: 'furniture', name: '家具日用' },
   { key: 'clothing', name: '服装鞋包' },
+  { key: 'beauty', name: '美妆配饰' },
+  { key: 'instrument', name: '中西乐器' },
   { key: 'books', name: '教材书籍' },
   { key: 'rental', name: '房屋出租' },
   { key: 'service', name: '生活服务' }
