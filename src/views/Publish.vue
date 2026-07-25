@@ -45,8 +45,10 @@
 
         <el-form-item label="上传图片">
           <div class="upload-area">
-            <input type="file" accept="image/*" multiple id="imgPicker" ref="fileInput" @change="handleFiles" style="display:none" />
-            <label for="imgPicker" class="file-label">选择图片</label>
+            <span class="file-btn-wrap">
+              <input type="file" accept="image/*" multiple ref="fileInput" @change="handleFiles" />
+              <span class="file-label">选择图片</span>
+            </span>
             <span class="upload-hint">支持 JPG/PNG，单张不超过 10MB</span>
           </div>
           <div class="image-preview" v-if="form.images.length">
@@ -218,8 +220,10 @@ async function submit() {
 <style scoped>
 .form-wrap { max-width: 640px; margin: 0 auto; padding: 24px; }
 .form-wrap h2 { margin-bottom: 20px; }
-.file-label { display: inline-flex; align-items: center; justify-content: center; padding: 8px 20px; background: #fff; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 14px; color: #606266; cursor: pointer; user-select: none; transition: all .2s; }
-.file-label:hover { color: #409eff; border-color: #409eff; }
+.file-btn-wrap { position: relative; display: inline-flex; }
+.file-btn-wrap input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; font-size: 0; z-index: 1; }
+.file-label { display: inline-flex; align-items: center; justify-content: center; padding: 8px 20px; background: #fff; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 14px; color: #606266; user-select: none; transition: all .2s; pointer-events: none; }
+.file-btn-wrap:hover .file-label { color: #409eff; border-color: #409eff; }
 .upload-area { display: flex; align-items: center; gap: 12px; }
 .upload-hint { color: #999; font-size: 0.85em; }
 .image-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
