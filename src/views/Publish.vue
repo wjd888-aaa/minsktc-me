@@ -46,7 +46,7 @@
         <el-form-item label="上传图片">
           <div class="upload-area">
             <input type="file" accept="image/*" multiple style="display:none" ref="fileInput" @change="handleFiles" />
-            <el-button @click="$refs.fileInput.click()">选择图片</el-button>
+            <el-button type="button" @click="pickFiles">选择图片</el-button>
             <span class="upload-hint">支持 JPG/PNG，单张不超过 2MB</span>
           </div>
           <div class="image-preview" v-if="form.images.length">
@@ -109,6 +109,7 @@ const form = reactive({
 })
 
 const fileInput = ref(null)
+function pickFiles() { fileInput.value?.click() }
 const uploading = ref(false)
 const submitting = ref(false)
 const success = ref(false)
