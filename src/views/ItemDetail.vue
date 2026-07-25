@@ -4,41 +4,43 @@
     <div v-if="loading" class="loading">加载中...</div>
     <div v-else-if="!item" class="loading">信息不存在</div>
     <div v-else class="detail-inner">
-      <div class="detail-main">
+      <div class="detail-left">
         <div v-if="item.images?.length" class="detail-img-wrap">
           <div v-for="(img, i) in item.images" :key="i" class="detail-img" :style="{ backgroundImage: 'url(' + img + ')' }" @click="openLightbox(i)"></div>
         </div>
-        <div v-if="lightboxShow" class="lightbox-overlay" @click.self="closeLightbox">
-          <img :src="item.images[lightboxIndex]" class="lightbox-img" @click="closeLightbox" />
-          <div v-if="item.images.length > 1" class="lightbox-nav">
-            <span class="lightbox-prev" @click.stop="prevImg">‹</span>
-            <span class="lightbox-next" @click.stop="nextImg">›</span>
-          </div>
-        </div>
-        <div class="detail-info">
+      </div>
+      <div class="detail-right">
+        <div class="detail-header">
           <h1>{{ item.title }}</h1>
           <p class="detail-price">¥{{ item.price }}</p>
           <p class="detail-meta">{{ item.category }} · {{ typeLabel }} · {{ timeAgo(item.createdAt) }}</p>
           <p v-if="item.metro" class="detail-metro">🚇 {{ getMetroName(item.metro) }} {{ item.address ? '— ' + item.address : '' }}</p>
-          <el-divider />
-          <p class="detail-desc">{{ item.description }}</p>
-
+        </div>
+        <div class="detail-body">
+          <div class="detail-section">
+            <p class="section-label">描述</p>
+            <p class="detail-desc">{{ item.description }}</p>
+          </div>
+          <div class="detail-section">
+            <p class="section-label">联系方式</p>
+            <p class="detail-contact">{{ item.contact || '未提供' }}</p>
+            <el-button type="primary" size="large" style="width:100%;margin-top:8px" @click="showContact = !showContact">
+              {{ showContact ? '收起' : '查看联系方式' }}
+            </el-button>
+            <p v-if="showContact" class="contact-reveal">{{ item.contact || '暂无' }}</p>
+          </div>
           <div v-if="isOwner" class="owner-actions">
-            <el-divider />
-            <el-button type="primary" @click="editItem">✏️ 编辑</el-button>
-            <el-button type="danger" @click="confirmDelete">🗑️ 删除</el-button>
+            <el-button type="primary" size="large" @click="editItem">✏️ 编辑</el-button>
+            <el-button type="danger" size="large" @click="confirmDelete">🗑️ 删除</el-button>
           </div>
         </div>
       </div>
-      <div class="detail-side">
-        <el-card>
-          <p><strong>📞 联系方式</strong></p>
-          <p>{{ item.contact || '未提供' }}</p>
-          <el-button type="primary" style="width:100%;margin-top:12px" @click="showContact = !showContact">
-            {{ showContact ? '隐藏' : '查看联系方式' }}
-          </el-button>
-          <p v-if="showContact" style="margin-top:8px;font-size:1.2em;text-align:center">{{ item.contact || '暂无' }}</p>
-        </el-card>
+    </div>
+    <div v-if="lightboxShow" class="lightbox-overlay" @click.self="closeLightbox">
+      <img :src="item.images[lightboxIndex]" class="lightbox-img" @click="closeLightbox" />
+      <div v-if="item.images.length > 1" class="lightbox-nav">
+        <span class="lightbox-prev" @click.stop="prevImg">‹</span>
+        <span class="lightbox-next" @click.stop="nextImg">›</span>
       </div>
     </div>
   </div>
@@ -110,21 +112,34 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.detail-inner { display: flex; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 24px; }
-.detail-main { flex: 1; }
-.detail-img-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-.detail-img { width: 100%; height: 0; padding-bottom: 56.25%; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #f0f0f0; border-radius: 8px; cursor: pointer; }
+.detail-inner { display: flex; gap: 48px; max-width: 1200px; margin: 0 auto; padding: 40px 32px; align-items: flex-start; }
+.detail-left { flex: 1; min-width: 0; }
+.detail-right { width: 380px; flex-shrink: 0; }
+.detail-img-wrap { display: flex; flex-direction: column; gap: 16px; }
+.detail-img { width: 100%; height: 480px; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #f5f5f5; border-radius: 12px; cursor: pointer; transition: box-shadow .2s; }
+.detail-img:hover { box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+@media (max-width: 768px) { .detail-img { height: 300px; } }
 .lightbox-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.9); display: flex; align-items: center; justify-content: center; }
 .lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 4px; cursor: zoom-out; }
 .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); display: flex; justify-content: space-between; width: 100%; pointer-events: none; }
 .lightbox-prev, .lightbox-next { pointer-events: auto; font-size: 48px; color: #fff; padding: 0 20px; cursor: pointer; user-select: none; opacity: .7; }
 .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
-.detail-info { padding: 0; }
-.detail-info h1 { font-size: 1.5em; margin-bottom: 8px; }
-.detail-price { font-size: 1.8em; color: #e74c3c; font-weight: 700; }
-.detail-meta { color: #999; font-size: 0.9em; margin: 8px 0; }
-.detail-desc { line-height: 1.7; color: #555; }
-.detail-side { width: 320px; flex-shrink: 0; }
-.loading { text-align: center; padding: 60px; color: #999; }
-.owner-actions { display: flex; gap: 12px; margin-top: 8px; }
+.detail-header { margin-bottom: 40px; }
+.detail-header h1 { font-size: 1.75em; font-weight: 700; margin-bottom: 12px; line-height: 1.3; color: #1a1a1a; }
+.detail-price { font-size: 2.2em; color: #e74c3c; font-weight: 700; margin-bottom: 8px; }
+.detail-meta { color: #999; font-size: .95em; }
+.detail-metro { color: #666; font-size: .95em; margin-top: 4px; }
+.detail-body { display: flex; flex-direction: column; gap: 32px; }
+.detail-section { background: #fafafa; border-radius: 12px; padding: 24px; }
+.section-label { font-size: .85em; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+.detail-desc { line-height: 1.8; color: #333; font-size: 1em; white-space: pre-wrap; }
+.detail-contact { font-size: 1.2em; font-weight: 600; color: #1a1a1a; }
+.contact-reveal { margin-top: 12px; font-size: 1.3em; font-weight: 700; color: #e74c3c; text-align: center; padding: 12px; background: #fff; border-radius: 8px; }
+.owner-actions { display: flex; gap: 16px; }
+.owner-actions .el-button { flex: 1; }
+.loading { text-align: center; padding: 80px; color: #999; font-size: 1.1em; }
+@media (max-width: 860px) {
+  .detail-inner { flex-direction: column; gap: 24px; padding: 24px 16px; }
+  .detail-right { width: 100%; }
+}
 </style>
