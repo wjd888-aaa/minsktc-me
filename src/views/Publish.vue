@@ -76,7 +76,7 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { createItem, getItem, updateItem } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
 import { MINSK_METRO, METRO_LINES, displayMetro } from '../data/metro.js'
@@ -114,6 +114,19 @@ const submitting = ref(false)
 const success = ref(false)
 
 const profile = JSON.parse(localStorage.getItem('profile') || '{}')
+
+async function ensurePhone() {
+  if (profile.phone) return true
+  try {
+    const { value } = await ElMessageBox.prompt('请先输入你的手机号以验证身份', '身份验证', { inputPlaceholder: '手机号', confirmButtonText: '确定', cancelButtonText: '取消' })
+    if (!value) return false
+    profile.phone = value
+    const p = JSON.parse(localStorage.getItem('profile') || '{}')
+    p.phone = value
+    localStorage.setItem('profile', JSON.stringify(p))
+    return true
+  } catch { return false }
+}
 
 async function loadItem() {
   try {
@@ -167,6 +180,7 @@ async function submit() {
     ElMessage.warning('请填写必填项')
     return
   }
+  if (isEdit.value && !await ensurePhone()) { return }
   submitting.value = true
   try {
     const payload = { ...form, price: parseFloat(form.price) || 0, phone: profile.phone || '' }
@@ -182,7 +196,8 @@ async function submit() {
       Object.assign(form, { title: '', category: '', type: 'sell', price: '', description: '', contact: '', metro: '', address: '', images: [] })
     }
   } catch (e) {
-    ElMessage.error(isEdit.value ? '保存失败' : '发布失败')
+    const msg = e.response?.data?.error || (isEdit.value ? '保存失败' : '发布失败')
+    ElMessage.error(msg)
   } finally {
     submitting.value = false
   }
