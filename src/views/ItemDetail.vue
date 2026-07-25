@@ -6,7 +6,9 @@
     <div v-else class="detail-inner">
       <div class="detail-left">
         <div v-if="item.images?.length" class="detail-img-wrap">
-          <div v-for="(img, i) in item.images" :key="i" class="detail-img" :style="{ backgroundImage: 'url(' + img + ')' }" @click="openLightbox(i)"></div>
+          <div v-for="(img, i) in item.images" :key="i" class="detail-img-box" @click="openLightbox(i)">
+            <img :src="img" class="detail-img" alt="" />
+          </div>
         </div>
       </div>
       <div class="detail-right">
@@ -116,9 +118,10 @@ onMounted(async () => {
 .detail-left { flex: 1; min-width: 0; }
 .detail-right { width: 380px; flex-shrink: 0; }
 .detail-img-wrap { display: flex; flex-direction: column; gap: 16px; }
-.detail-img { width: 100%; height: 480px; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #f5f5f5; border-radius: 12px; cursor: pointer; transition: box-shadow .2s; }
-.detail-img:hover { box-shadow: 0 4px 20px rgba(0,0,0,.08); }
-@media (max-width: 768px) { .detail-img { height: 300px; } }
+.detail-img-box { width: 100%; height: 480px; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5; border-radius: 12px; cursor: pointer; overflow: hidden; transition: box-shadow .2s; }
+.detail-img-box:hover { box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+.detail-img { max-width: 100%; max-height: 100%; display: block; }
+@media (max-width: 768px) { .detail-img-box { height: 300px; } }
 .lightbox-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.9); display: flex; align-items: center; justify-content: center; }
 .lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 4px; cursor: zoom-out; }
 .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); display: flex; justify-content: space-between; width: 100%; pointer-events: none; }
