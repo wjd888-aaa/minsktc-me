@@ -37,6 +37,7 @@
       </div>
     </div>
     <div v-if="lightboxShow" class="lightbox-overlay" @click.self="closeLightbox">
+      <span class="lightbox-close" @click.stop="closeLightbox">×</span>
       <img :src="item.images[lightboxIndex]" class="lightbox-img" @click="closeLightbox" />
       <div v-if="item.images.length > 1" class="lightbox-nav">
         <span class="lightbox-prev" @click.stop="prevImg">‹</span>
@@ -125,6 +126,8 @@ onMounted(async () => {
 .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); display: flex; justify-content: space-between; width: 100%; pointer-events: none; }
 .lightbox-prev, .lightbox-next { pointer-events: auto; font-size: 48px; color: #fff; padding: 0 20px; cursor: pointer; user-select: none; opacity: .7; }
 .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
+.lightbox-close { position: fixed; top: 20px; right: 20px; z-index: 10000; font-size: 40px; color: #fff; cursor: pointer; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(0,0,0,.4); user-select: none; line-height: 1; }
+.lightbox-close:hover { background: rgba(0,0,0,.7); }
 .detail-header { margin-bottom: 40px; }
 .detail-header h1 { font-size: 1.75em; font-weight: 700; margin-bottom: 12px; line-height: 1.3; color: #1a1a1a; }
 .detail-price { font-size: 2.2em; color: #e74c3c; font-weight: 700; margin-bottom: 8px; }
