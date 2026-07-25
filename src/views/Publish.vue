@@ -47,7 +47,7 @@
           <div class="upload-area">
             <input type="file" accept="image/*" multiple id="imgPicker" ref="fileInput" @change="handleFiles" style="display:none" />
             <label for="imgPicker" class="file-label">选择图片</label>
-            <span class="upload-hint">支持 JPG/PNG，单张不超过 2MB</span>
+            <span class="upload-hint">支持 JPG/PNG，单张不超过 10MB</span>
           </div>
           <div class="image-preview" v-if="form.images.length">
             <div v-for="(img, i) in form.images" :key="i" class="img-item">
@@ -153,24 +153,35 @@ onMounted(() => {
   if (isEdit.value) loadItem()
 })
 
-function handleFiles(e) {
+async function uploadFile(file) {
+  const fd = new FormData()
+  fd.append('file', file)
+  const res = await fetch('/api/upload', { method: 'POST', body: fd })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.error || '上传失败')
+  return data.url
+}
+
+async function handleFiles(e) {
   const files = e.target.files
   if (!files.length) return
   uploading.value = true
-  let loaded = 0
+  let done = 0
   for (const file of files) {
-    if (file.size > 2 * 1024 * 1024) {
-      ElMessage.warning(file.name + ' 超过 2MB 限制')
+    if (file.size > 10 * 1024 * 1024) {
+      ElMessage.warning(file.name + ' 超过 10MB 限制')
+      done++
+      if (done === files.length) uploading.value = false
       continue
     }
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      form.images.push(ev.target.result)
-      loaded++
-      if (loaded === files.length) uploading.value = false
+    try {
+      const url = await uploadFile(file)
+      form.images.push(url)
+    } catch (e) {
+      ElMessage.error(file.name + ' 上传失败: ' + e.message)
     }
-    reader.onerror = () => { uploading.value = false; ElMessage.error('图片读取失败') }
-    reader.readAsDataURL(file)
+    done++
+    if (done === files.length) uploading.value = false
   }
   fileInput.value.value = ''
 }
