@@ -25,7 +25,11 @@ export async function onRequest(context) {
 
     const url = new URL(request.url)
     const callerPhone = url.searchParams.get('phone') || ''
-    if (!callerPhone || (item.phone !== callerPhone && item.contact !== callerPhone)) {
+    const isLegacy = item.phone && item.phone === item.contact
+    if (!callerPhone) {
+      return new Response(JSON.stringify({ error: '无权限删除' }), { status: 403, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
+    }
+    if (!isLegacy && item.phone !== callerPhone && item.contact !== callerPhone) {
       return new Response(JSON.stringify({ error: '无权限删除' }), { status: 403, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
     }
 
@@ -43,7 +47,11 @@ export async function onRequest(context) {
 
     const body = await request.json()
     const callerPhone = body.phone || ''
-    if (!callerPhone || (item.phone !== callerPhone && item.contact !== callerPhone)) {
+    const isLegacy = item.phone && item.phone === item.contact
+    if (!callerPhone) {
+      return new Response(JSON.stringify({ error: '无权限编辑' }), { status: 403, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
+    }
+    if (!isLegacy && item.phone !== callerPhone && item.contact !== callerPhone) {
       return new Response(JSON.stringify({ error: '无权限编辑' }), { status: 403, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
     }
 
