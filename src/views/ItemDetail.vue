@@ -6,7 +6,14 @@
     <div v-else class="detail-inner">
       <div class="detail-main">
         <div v-if="item.images?.length" class="detail-img-wrap">
-          <div v-for="(img, i) in item.images" :key="i" class="detail-img" :style="{ backgroundImage: 'url(' + img + ')' }"></div>
+          <div v-for="(img, i) in item.images" :key="i" class="detail-img" :style="{ backgroundImage: 'url(' + img + ')' }" @click="openLightbox(i)"></div>
+        </div>
+        <div v-if="lightboxShow" class="lightbox-overlay" @click.self="closeLightbox">
+          <img :src="item.images[lightboxIndex]" class="lightbox-img" @click="closeLightbox" />
+          <div v-if="item.images.length > 1" class="lightbox-nav">
+            <span class="lightbox-prev" @click.stop="prevImg">‹</span>
+            <span class="lightbox-next" @click.stop="nextImg">›</span>
+          </div>
         </div>
         <div class="detail-info">
           <h1>{{ item.title }}</h1>
@@ -50,6 +57,8 @@ const router = useRouter()
 const item = ref(null)
 const loading = ref(true)
 const showContact = ref(false)
+const lightboxShow = ref(false)
+const lightboxIndex = ref(0)
 const profile = JSON.parse(localStorage.getItem('profile') || '{}')
 
 const typeLabel = computed(() => ({ sell: '出售', rent: '出租', buy: '求购' }[item.value?.type] || ''))
@@ -59,6 +68,10 @@ const isOwner = computed(() => {
   return profile.phone && item.value.phone === profile.phone
 })
 
+function openLightbox(i) { lightboxIndex.value = i; lightboxShow.value = true }
+function closeLightbox() { lightboxShow.value = false }
+function prevImg() { lightboxIndex.value = (lightboxIndex.value - 1 + item.value.images.length) % item.value.images.length }
+function nextImg() { lightboxIndex.value = (lightboxIndex.value + 1) % item.value.images.length }
 function timeAgo(date) {
   if (!date) return ''
   const diff = Date.now() - new Date(date).getTime()
@@ -100,7 +113,12 @@ onMounted(async () => {
 .detail-inner { display: flex; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 24px; }
 .detail-main { flex: 1; }
 .detail-img-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-.detail-img { width: 100%; height: 0; padding-bottom: 56.25%; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #f0f0f0; border-radius: 8px; }
+.detail-img { width: 100%; height: 0; padding-bottom: 56.25%; background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #f0f0f0; border-radius: 8px; cursor: pointer; }
+.lightbox-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.9); display: flex; align-items: center; justify-content: center; }
+.lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 4px; cursor: zoom-out; }
+.lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); display: flex; justify-content: space-between; width: 100%; pointer-events: none; }
+.lightbox-prev, .lightbox-next { pointer-events: auto; font-size: 48px; color: #fff; padding: 0 20px; cursor: pointer; user-select: none; opacity: .7; }
+.lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
 .detail-info { padding: 0; }
 .detail-info h1 { font-size: 1.5em; margin-bottom: 8px; }
 .detail-price { font-size: 1.8em; color: #e74c3c; font-weight: 700; }
