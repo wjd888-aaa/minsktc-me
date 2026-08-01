@@ -17,7 +17,7 @@
       </div>
     </section>
     <section class="categories">
-      <div class="cat-grid">
+      <div class="cat-grid" :class="{ 'mobile-grid': isMobile }">
         <div v-for="cat in mainCategories" :key="cat.key" class="cat-card" @click="$router.push('/items?cat=' + cat.key)">
           <span class="cat-icon">{{ cat.icon }}</span>
           <span class="cat-name">{{ cat.name }}</span>
@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Loading } from '@element-plus/icons-vue'
 import { getItems } from '../api/index.js'
@@ -58,6 +58,12 @@ const items = ref([])
 const loading = ref(true)
 const mainCategories = MAIN_CATEGORIES
 const extraCategories = EXTRA_CATEGORIES
+
+const mql = window.matchMedia('(max-width: 768px)')
+const isMobile = ref(mql.matches)
+function onScreenChange(e) { isMobile.value = e.matches }
+onMounted(() => mql.addEventListener('change', onScreenChange))
+onUnmounted(() => mql.removeEventListener('change', onScreenChange))
 
 const metroLines = Object.entries(METRO_LINES).map(([key, val]) => ({
   key,
@@ -96,6 +102,7 @@ onMounted(async () => {
 .search-input { flex: 1; }
 .categories { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
 .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.cat-grid.mobile-grid { grid-template-columns: 1fr 1fr 1fr; }
 .cat-card { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 8px; border-radius: 16px; background: #f8f8f8; cursor: pointer; transition: all .25s; }
 .cat-card:hover { background: #f0f0f0; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.06); }
 .cat-icon { font-size: 1.6em; line-height: 1; }

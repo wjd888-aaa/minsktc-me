@@ -12,7 +12,8 @@ export async function onRequest(context) {
     let sql = 'SELECT * FROM items WHERE 1=1'
     const params = []
 
-    if (category) { sql += ' AND category = ?'; params.push(category) }
+    if (category === 'food') { sql += ' AND category IN (?, ?)'; params.push('food', 'seasoning') }
+    else if (category) { sql += ' AND category = ?'; params.push(category) }
     if (type) { sql += ' AND type = ?'; params.push(type) }
     if (metro) { sql += ' AND metro = ?'; params.push(metro) }
     if (search) { sql += ' AND title LIKE ?'; params.push(`%${search}%`) }

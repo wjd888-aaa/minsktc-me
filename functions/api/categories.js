@@ -2,6 +2,7 @@ const CATEGORIES = [
   { key: 'digital', name: '数码', icon: '💻' },
   { key: 'furniture', name: '家具', icon: '🛋️' },
   { key: 'appliance', name: '家电', icon: '📺' },
+  { key: 'kitchenware', name: '厨具', icon: '🍳' },
   { key: 'textile', name: '家纺', icon: '🧵' },
   { key: 'menswear', name: '男装', icon: '👔' },
   { key: 'womenswear', name: '女装', icon: '👗' },
@@ -11,13 +12,13 @@ const CATEGORIES = [
   { key: 'sports', name: '运动', icon: '⚽' },
   { key: 'medicine', name: '医药', icon: '💊' },
   { key: 'food', name: '食品', icon: '🍜' },
-  { key: 'seasoning', name: '调料', icon: '🌶️' },
   { key: 'toiletries', name: '洗护', icon: '🧴' },
   { key: 'beauty', name: '美妆', icon: '💄' },
   { key: 'instrument', name: '乐器', icon: '🎵' },
   { key: 'books', name: '书籍', icon: '📚' },
   { key: 'camping', name: '露营', icon: '⛺' },
   { key: 'gift', name: '礼品', icon: '🎁' },
+  { key: 'other', name: '其他', icon: '📦' },
   { key: 'service', name: '服务', icon: '🔧' },
   { key: 'rental', name: '租房', icon: '🏠' }
 ]

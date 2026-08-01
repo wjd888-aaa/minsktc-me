@@ -15,14 +15,14 @@
         </el-select>
       </div>
       <div class="category-filter">
-        <div class="cat-row-main">
+        <div class="cat-row-main" :class="{ 'mobile-grid': isMobile }">
           <span
             v-for="c in mainCategories"
             :key="c.key"
             class="cat-pill"
             :class="{ active: category === c.key }"
             @click="toggleCategory(c.key)"
-          >{{ c.name }}</span>
+          >{{ c.icon }} {{ c.name }}</span>
         </div>
         <div class="cat-row-extra">
           <span
@@ -31,7 +31,7 @@
             class="cat-pill cat-pill-extra"
             :class="{ active: category === c.key }"
             @click="toggleCategory(c.key)"
-          >{{ c.name }}<span v-if="i < extraCategories.length - 1" class="cat-sep">|</span></span>
+          >{{ c.icon }} {{ c.name }}<span v-if="i < extraCategories.length - 1" class="cat-sep">|</span></span>
         </div>
       </div>
       <div v-if="loading" class="loading"><el-icon class="is-loading"><Loading /></el-icon> 加载中...</div>
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { Loading } from '@element-plus/icons-vue'
 import { getItems } from '../api/index.js'
@@ -61,6 +61,12 @@ const type = ref('')
 const metro = ref(route.query.metro || '')
 const mainCategories = MAIN_CATEGORIES
 const extraCategories = EXTRA_CATEGORIES
+
+const mql = window.matchMedia('(max-width: 768px)')
+const isMobile = ref(mql.matches)
+function onScreenChange(e) { isMobile.value = e.matches }
+onMounted(() => mql.addEventListener('change', onScreenChange))
+onUnmounted(() => mql.removeEventListener('change', onScreenChange))
 
 const metroLines = Object.entries(METRO_LINES).map(([key, val]) => ({
   key,
@@ -98,9 +104,11 @@ onMounted(load)
 .filters .el-select { min-width: 180px; }
 .category-filter { margin-bottom: 28px; }
 .cat-row-main { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
-.cat-row-extra { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 14px; border-top: 1px solid #eee; }
+.cat-row-extra { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 14px; border-top: 1px solid #eee; justify-content: center; }
 .cat-pill { display: inline-block; padding: 6px 18px; border-radius: 20px; font-size: 0.9em; color: #555; background: #f5f5f5; cursor: pointer; transition: all .2s; user-select: none; letter-spacing: 0.02em; }
 .cat-pill:hover { background: #e8e8e8; color: #333; }
+.cat-row-main.mobile-grid { display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.cat-row-main.mobile-grid .cat-pill { text-align: center; padding: 8px 12px; }
 .cat-pill.active { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; font-weight: 600; box-shadow: 0 2px 8px rgba(102,126,234,.35); }
 .cat-pill-extra { background: #fafafa; color: #888; font-size: 0.85em; padding: 5px 14px; }
 .cat-pill-extra.active { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
