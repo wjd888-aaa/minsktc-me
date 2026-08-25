@@ -229,7 +229,7 @@
         var link = document.getElementById('bkUserLink');
         if (!link) return;
         try {
-          var info = JSON.parse(localStorage.getItem('bk_user') || 'null');
+          var info = JSON.parse(localStorage.getItem('xianyu_user') || 'null');
           if (info && info.n) link.textContent = '👤 ' + (info.n.length > 10 ? info.n.slice(0, 10) + '…' : info.n);
         } catch (e) {}
       }
@@ -429,15 +429,15 @@
         '<div class="bk-panel" role="dialog" aria-modal="true">' +
           '<div class="bk-pf-avatar" id="bkPfAvatar">?</div>' +
           '<p class="bk-pf-name" id="bkPfName">未登录</p>' +
-          '<p class="bk-pf-email" id="bkPfEmail">登录后可查看全部内容</p>' +
+          '<p class="bk-pf-email" id="bkPfEmail">登录后可发布和管理闲置信息</p>' +
           '<div id="bkPfBtnArea"></div>' +
           '<div class="bk-pf-links">' +
             '<a class="bk-pf-link" href="mailto:business@minsktc.me"><span>💼 业务合作</span><b>business@minsktc.me</b></a>' +
             '<a class="bk-pf-link" href="mailto:tech@minsktc.me"><span>🛠 技术维护</span><b>tech@minsktc.me</b></a>' +
-            '<a class="bk-pf-link" href="/privacy.html"><span>📄 隐私政策</span><span class="arr">›</span></a>' +
-            '<a class="bk-pf-link" href="/terms.html"><span>📜 用户协议</span><span class="arr">›</span></a>' +
+            '<a class="bk-pf-link" href="https://news.minsktc.me/privacy.html"><span>📄 隐私政策</span><span class="arr">›</span></a>' +
+            '<a class="bk-pf-link" href="https://news.minsktc.me/terms.html"><span>📜 用户协议</span><span class="arr">›</span></a>' +
           '</div>' +
-          '<p class="bk-pf-foot">©2026 MwM · 白俄新闻中文站</p>' +
+          '<p class="bk-pf-foot">©2026 MwM · minsk同城</p>' +
         '</div>';
       document.body.appendChild(wrap);
 
@@ -456,7 +456,7 @@
 
       function localState() {
         try {
-          var info = JSON.parse(localStorage.getItem('bk_user') || 'null');
+          var info = JSON.parse(localStorage.getItem('xianyu_user') || 'null');
           if (info && info.n) return { _local: true, username: info.n, email: info.e || '' };
         } catch (e) {}
         return null;
@@ -477,14 +477,14 @@
           out.className = 'bk-pf-btn outline';
           out.textContent = '退出登录';
           out.addEventListener('click', function () {
-            try { localStorage.removeItem('bk_user'); } catch (e) {}
+            try { localStorage.removeItem('xianyu_user'); } catch (e) {}
             BKAuth.logout().then(function () { location.reload(); });
           });
           btnArea.appendChild(out);
         } else {
           avatar.textContent = '👤';
           nameEl.textContent = '未登录';
-          emailEl.textContent = '登录后可查看全部内容';
+          emailEl.textContent = '登录后可发布和管理闲置信息';
           var inn = document.createElement('button');
           inn.type = 'button';
           inn.className = 'bk-pf-btn';

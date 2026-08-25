@@ -10,9 +10,9 @@
         <router-link to="/items">所有信息</router-link>
         <router-link to="/publish">发布信息</router-link>
       </nav>
-      <router-link to="/login" class="login-btn">
+      <button class="login-btn" type="button" @click="openPanel">
         <el-button size="small">{{ user || '登录 / 我的' }}</el-button>
-      </router-link>
+      </button>
     </div>
   </header>
 </template>
@@ -29,6 +29,21 @@ onMounted(() => {
     user.value = (u && u.n) || p.name || p.phone || ''
   } catch (e) {}
 })
+
+function openPanel() {
+  function go() {
+    if (window.BKAuth && window.BKAuth.panel) window.BKAuth.panel()
+    else setTimeout(go, 150)
+  }
+  if (window.BKAuth) go()
+  else {
+    const s = document.createElement('script')
+    s.src = '/clerk-auth.js'
+    s.onload = go
+    s.onerror = () => { window.location.href = '/login' }
+    document.head.appendChild(s)
+  }
+}
 </script>
 
 <style scoped>

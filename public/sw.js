@@ -1,4 +1,4 @@
-var CACHE = 'xianyu-v1';
+var CACHE = 'xianyu-v2';
 var PRECACHE = [
   '/',
   '/manifest.json',
