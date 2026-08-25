@@ -434,8 +434,8 @@
           '<div class="bk-pf-links">' +
             '<a class="bk-pf-link" href="mailto:business@minsktc.me"><span>💼 业务合作</span><b>business@minsktc.me</b></a>' +
             '<a class="bk-pf-link" href="mailto:tech@minsktc.me"><span>🛠 技术维护</span><b>tech@minsktc.me</b></a>' +
-            '<a class="bk-pf-link" href="https://news.minsktc.me/privacy.html"><span>📄 隐私政策</span><span class="arr">›</span></a>' +
-            '<a class="bk-pf-link" href="https://news.minsktc.me/terms.html"><span>📜 用户协议</span><span class="arr">›</span></a>' +
+            '<a class="bk-pf-link" href="/privacy.html"><span>📄 隐私政策</span><span class="arr">›</span></a>' +
+            '<a class="bk-pf-link" href="/terms.html"><span>📜 用户协议</span><span class="arr">›</span></a>' +
           '</div>' +
           '<p class="bk-pf-foot">©2026 MwM · minsk同城</p>' +
         '</div>';
