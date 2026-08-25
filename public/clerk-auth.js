@@ -49,11 +49,11 @@
 
   var LOCALIZATION = {
     signIn: {
-      start: { title: '欢迎回来', subtitle: '登录 minsk 咸鱼，管理你的闲置', actionText: '还没有账户？', actionLink: '注册' },
+      start: { title: '欢迎回来', subtitle: '登录 minsk 同城，管理你的闲置', actionText: '还没有账户？', actionLink: '注册' },
       emailCode: { title: '查收验证码', subtitle: '我们已将验证码发送到你的邮箱' }
     },
     signUp: {
-      start: { title: '创建账户', subtitle: '注册 minsk 咸鱼，开始发布闲置', actionText: '已有账户？', actionLink: '登录' },
+      start: { title: '创建账户', subtitle: '注册 minsk 同城，开始发布闲置', actionText: '已有账户？', actionLink: '登录' },
       emailCode: { title: '查收验证码', subtitle: '我们已将验证码发送到你的邮箱' }
     },
     'formButtonPrimary': '继续',
