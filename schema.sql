@@ -13,3 +13,12 @@ CREATE TABLE IF NOT EXISTS items (
   createdAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS comments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  itemId INTEGER NOT NULL,
+  name TEXT NOT NULL DEFAULT '匿名',
+  content TEXT NOT NULL,
+  createdAt TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_comments_item ON comments(itemId);

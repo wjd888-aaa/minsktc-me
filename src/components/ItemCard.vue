@@ -8,6 +8,7 @@
       <p class="price">¥{{ item.price }}</p>
       <p class="meta">{{ getCategoryName(item.category) }} · {{ timeAgo(item.createdAt) }}</p>
       <p v-if="item.metro" class="metro-tag">🚇 {{ getMetroName(item.metro) }}</p>
+      <p class="comment-count">💬 {{ item.commentCount || 0 }} 条留言</p>
     </div>
   </el-card>
 </template>
@@ -36,4 +37,5 @@ function timeAgo(date) {
 .card-body h3 { font-size: 1em; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .price { color: #e74c3c; font-weight: 700; font-size: 1.1em; margin-bottom: 4px; }
 .meta { color: #999; font-size: 0.85em; }
+.comment-count { color: #8a8a8a; font-size: 0.8em; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #eee; }
 </style>

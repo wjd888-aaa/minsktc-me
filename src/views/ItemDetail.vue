@@ -44,6 +44,9 @@
         <span class="lightbox-next" @click.stop="nextImg">›</span>
       </div>
     </div>
+    <div v-if="item" class="comment-wrap">
+      <CommentSection :item-id="item.id" />
+    </div>
   </div>
 </template>
 
@@ -53,6 +56,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { getItem, deleteItem } from '../api/index.js'
 import Navbar from '../components/Navbar.vue'
+import CommentSection from '../components/CommentSection.vue'
 import { getMetroName } from '../data/metro.js'
 import { getCategoryName } from '../data/categories.js'
 
@@ -137,8 +141,10 @@ onMounted(async () => {
 .owner-actions { display: flex; gap: 16px; }
 .owner-actions .el-button { flex: 1; }
 .loading { text-align: center; padding: 80px; color: #999; font-size: 1.1em; }
+.comment-wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px 60px; }
 @media (max-width: 860px) {
   .detail-inner { flex-direction: column; gap: 24px; padding: 24px 16px; }
   .detail-right { width: 100%; }
+  .comment-wrap { padding: 0 16px 40px; }
 }
 </style>

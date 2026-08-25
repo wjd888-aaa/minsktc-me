@@ -9,16 +9,16 @@ export async function onRequest(context) {
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '20'), 50)
 
   if (request.method === 'GET') {
-    let sql = 'SELECT * FROM items WHERE 1=1'
+    let sql = 'SELECT i.*, (SELECT COUNT(*) FROM comments c WHERE c.itemId = i.id) AS commentCount FROM items i WHERE 1=1'
     const params = []
 
-    if (category === 'food') { sql += ' AND category IN (?, ?)'; params.push('food', 'seasoning') }
-    else if (category) { sql += ' AND category = ?'; params.push(category) }
-    if (type) { sql += ' AND type = ?'; params.push(type) }
-    if (metro) { sql += ' AND metro = ?'; params.push(metro) }
-    if (search) { sql += ' AND title LIKE ?'; params.push(`%${search}%`) }
+    if (category === 'food') { sql += ' AND i.category IN (?, ?)'; params.push('food', 'seasoning') }
+    else if (category) { sql += ' AND i.category = ?'; params.push(category) }
+    if (type) { sql += ' AND i.type = ?'; params.push(type) }
+    if (metro) { sql += ' AND i.metro = ?'; params.push(metro) }
+    if (search) { sql += ' AND i.title LIKE ?'; params.push(`%${search}%`) }
 
-    sql += ' ORDER BY createdAt DESC LIMIT ?'
+    sql += ' ORDER BY i.createdAt DESC LIMIT ?'
     params.push(limit)
 
     const result = await env.DB.prepare(sql).bind(...params).all()

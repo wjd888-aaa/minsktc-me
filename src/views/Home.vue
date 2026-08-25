@@ -93,9 +93,9 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.hero { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
-.hero h1 { font-size: 2em; margin-bottom: 10px; }
-.hero p { margin-bottom: 24px; opacity: 0.9; }
+.hero { position: relative; text-align: center; padding: 80px 20px 84px; color: #fff; background: linear-gradient(rgba(20, 22, 28, 0.34) 0%, rgba(20, 22, 28, 0.6) 100%), url('/minskgate.png') center 32% / cover no-repeat #232323; }
+.hero h1 { font-size: 2em; margin-bottom: 10px; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45); }
+.hero p { margin-bottom: 24px; opacity: 0.92; }
 .hero-actions { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; }
 .hero-metro { margin-top: 16px; }
 .hero-metro .el-select { --el-select-input-color: #fff; }
@@ -114,4 +114,8 @@ onMounted(async () => {
 .recent h2 { margin-bottom: 16px; }
 .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 .loading, .empty { text-align: center; padding: 40px; color: #999; }
+@media (max-width: 768px) {
+  .hero { padding: 52px 16px 60px; background: linear-gradient(rgba(20, 22, 28, 0.34) 0%, rgba(20, 22, 28, 0.6) 100%), url('/minskgate.png') center 28% / cover no-repeat #232323; }
+  .hero h1 { font-size: 1.6em; }
+}
 </style>

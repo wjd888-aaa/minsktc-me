@@ -7,7 +7,9 @@ export async function onRequest(context) {
   }
 
   if (request.method === 'GET') {
-    const item = await env.DB.prepare('SELECT * FROM items WHERE id = ?').bind(id).first()
+    const item = await env.DB.prepare(
+      'SELECT i.*, (SELECT COUNT(*) FROM comments c WHERE c.itemId = i.id) AS commentCount FROM items i WHERE i.id = ?'
+    ).bind(id).first()
     if (!item) {
       return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
     }
@@ -73,7 +75,9 @@ export async function onRequest(context) {
       id
     ).run()
 
-    const updated = await env.DB.prepare('SELECT * FROM items WHERE id = ?').bind(id).first()
+    const updated = await env.DB.prepare(
+      'SELECT i.*, (SELECT COUNT(*) FROM comments c WHERE c.itemId = i.id) AS commentCount FROM items i WHERE i.id = ?'
+    ).bind(id).first()
     updated.images = JSON.parse(updated.images || '[]')
     return new Response(JSON.stringify(updated), {
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }

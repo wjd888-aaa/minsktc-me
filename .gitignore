@@ -3,3 +3,4 @@ dist
 .env
 *.local
 d1-output.json
+.wrangler

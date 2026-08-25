@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="format-detection" content="telephone=no" />
+<title>minsktc.me · 明斯克华人生活信息平台</title>
+<meta name="description" content="明斯克华人二手交易 · 房屋出租 · 生活服务。全新留言互动功能上线，每条商品都能留言问价、聊一聊。" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    background: #0f1226;
+    color: #1a1a1a;
+    min-height: 100vh;
+  }
+  .page { max-width: 480px; margin: 0 auto; background: linear-gradient(180deg, #f6f7ff 0%, #ffffff 100%); min-height: 100vh; padding: 32px 24px 40px; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  .logo {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 16px; letter-spacing: 0.5px;
+    box-shadow: 0 4px 14px rgba(102,126,234,.35);
+  }
+  .brand-name { font-size: 18px; font-weight: 800; color: #1a1a1a; }
+  .brand-sub { font-size: 11px; color: #999; margin-top: 2px; letter-spacing: .5px; }
+  .tag {
+    display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px;
+    border-radius: 100px; margin-bottom: 14px; letter-spacing: 1px;
+  }
+  h1 { font-size: 26px; line-height: 1.35; font-weight: 800; color: #15182e; margin-bottom: 14px; }
+  h1 em { font-style: normal; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .lead { font-size: 15px; color: #666; line-height: 1.8; margin-bottom: 26px; }
+  .features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px; }
+  .feature {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: #fff; border: 1px solid #eceef7; border-radius: 16px;
+    padding: 18px 16px; box-shadow: 0 6px 20px rgba(20,25,60,.05);
+  }
+  .feature .icon { flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; background: #eef0ff; }
+  .feature b { display: block; font-size: 15px; color: #15182e; margin-bottom: 4px; }
+  .feature span { font-size: 13px; color: #888; line-height: 1.6; }
+  .feature.hot { border-color: #c7d0ff; background: linear-gradient(180deg, #fbfbff, #f4f6ff); box-shadow: 0 8px 24px rgba(102,126,234,.12); }
+  .feature.hot .icon { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+  .feature.hot b { color: #4b5bd0; }
+  .new-badge {
+    display: inline-block; font-size: 10px; font-weight: 700; color: #fff;
+    background: #ff5d5d; border-radius: 100px; padding: 2px 8px; margin-left: 8px;
+    vertical-align: 2px; animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+  .quote { border-left: 3px solid #667eea; padding: 6px 14px; font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 26px; background: rgba(102,126,234,.05); border-radius: 0 10px 10px 0; }
+  .quote b { color: #4b5bd0; }
+  .btn {
+    display: block; text-decoration: none; text-align: center;
+    background: linear-gradient(135deg, #667eea, #764ba2); color: #fff;
+    font-size: 17px; font-weight: 700; padding: 15px 0; border-radius: 100px;
+    box-shadow: 0 10px 24px rgba(102,126,234,.4); margin-bottom: 12px;
+    transition: transform .15s;
+  }
+  .btn:active { transform: scale(.97); }
+  .foot { text-align: center; font-size: 12px; color: #b3b6c8; line-height: 1.8; }
+  .foot b { color: #8b90b8; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="brand">
+      <div class="logo">TC</div>
+      <div>
+        <div class="brand-name">minsktc.me</div>
+        <div class="brand-sub">明斯克华人生活信息平台</div>
+      </div>
+    </div>
+
+    <span class="tag">全新升级 · 留言互动</span>
+    <h1>二手好物会说话<br /><em>看完了，还能聊两句</em></h1>
+    <p class="lead">二手买卖 · 房屋出租 · 求购互助 · 生活服务<br />全中文界面，按地铁站筛选，在明斯克生活必备。</p>
+
+    <div class="features">
+      <div class="feature hot">
+        <div class="icon">💬</div>
+        <div>
+          <b>每条商品都能留言<span class="new-badge">新</span></b>
+          <span>问价格、问成色、问还在不在——直接在商品下面留言，卖家一看便知，买卖从"看"变成"聊"。</span>
+        </div>
+      </div>
+      <div class="feature hot">
+        <div class="icon">🔥</div>
+        <div>
+          <b>热度一目了然<span class="new-badge">新</span></b>
+          <span>卡片上直接显示这条宝贝有多少人留言关注，跟着热门买，闭眼不出错。</span>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="icon">🛍️</div>
+        <div>
+          <b>闲置流转，一站搞定</b>
+          <span>数码、家具、女装、箱包、书籍、租房转租……全城华人的闲置都在这里。</span>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="icon">🚇</div>
+        <div>
+          <b>按地铁站淘货</b>
+          <span>离家近的宝贝优先看，自取方便，交易更省心。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote"><b>在明斯克收二手，看完还能留言聊两句，买卖更透明，也更有人情味。</b></div>
+
+    <a class="btn" href="https://minsktc.me">去 minsktc.me 逛逛 →</a>
+    <a class="btn" href="https://minsktc.me/publish" style="background:linear-gradient(135deg,#5b6bd6,#6a4ea0);">发布我的闲置 →</a>
+    <p class="foot">minsktc.me · 明斯克华人生活信息平台<br />扫码或点击上方按钮直达 👆</p>
+  </div>
+</body>
+</html>
